@@ -5,7 +5,9 @@ import java.io.IOException;
 
 import javax.net.ssl.StandardConstants;
 
+import environment.BoardPosition;
 import environment.LocalBoard;
+import game.Goal;
 import game.Server;
 
 public class Main {
@@ -15,6 +17,5 @@ public class Main {
 		game.init();
 		// Launch server
 		// TODO
-		
 	}
 }

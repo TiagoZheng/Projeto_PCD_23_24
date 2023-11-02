@@ -21,6 +21,7 @@ public abstract class Board extends Observable {
 	protected LinkedList<Snake> snakes = new LinkedList<Snake>();
 	private LinkedList<Obstacle> obstacles= new LinkedList<Obstacle>();
 	protected boolean isFinished;
+	public char[] getGoalPosition;
 
 	public Board() {
 		cells = new Cell[NUM_COLUMNS][NUM_ROWS];
@@ -56,7 +57,7 @@ public abstract class Board extends Observable {
 				getCell(pos).setGameElement(gameElement);
 				if(gameElement instanceof Goal) {
 					setGoalPosition(pos);
-//					System.out.println("Goal placed at:"+pos);
+					System.out.println("Goal placed at:"+pos);
 				}
 				placed=true;
 			}
@@ -91,7 +92,7 @@ public abstract class Board extends Observable {
 		getObstacles().clear();
 		while(numberObstacles>0) {
 			Obstacle obs=new Obstacle(this);
-			addGameElement( obs);
+			addGameElement(obs);
 			getObstacles().add(obs);
 			numberObstacles--;
 		}

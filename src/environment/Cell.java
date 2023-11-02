@@ -40,8 +40,8 @@ public class Cell {
 	}
 
 	public void release() {
-		ocuppyingSnake=null;
 		//TODO
+		ocuppyingSnake=null;
 	}
 
 	public boolean isOcupiedBySnake() {

@@ -41,15 +41,22 @@ public abstract class Snake extends Thread implements Serializable{
 	public LinkedList<Cell> getCells() {
 		return cells;
 	}
-	protected void move(Cell cell) throws InterruptedException {
-		cells.addLast(cell);
-		cell.request(this);
-		cells.getFirst().release();
+	protected void move(Cell nextCell) throws InterruptedException {
+		// cells.addLast(cell);
+		// cell.request(this);
+		// cells.getFirst().release();
 		// TODO
 		// cells.addLast(cell);
 		// cell.request(this);
 		// cells.removeFirst().release();
-		System.out.println(cells.getLast().getPosition() + "Lista da cobra");
+		// System.out.println(cells.getLast().getPosition() + "Lista da cobra");
+
+		//
+		nextCell.request(this);
+		cells.add(nextCell);
+		cells.removeFirst().release();
+		SnakeGui.updatePosition();
+		
 	}
 	
 	public LinkedList<BoardPosition> getPath() {

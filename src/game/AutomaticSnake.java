@@ -23,9 +23,8 @@ public class AutomaticSnake extends Snake {
     	System.err.println("Initial size:" + cells.size());
     	try {
         	while (true) {
-				System.out.println("Hellos");
             	moveTowardsGoal();
-            	Thread.sleep(1000); // Adjust the delay as needed
+            	Thread.sleep(1000); 
         	}
     	} catch (InterruptedException e) {
         	e.printStackTrace();
@@ -38,6 +37,7 @@ public class AutomaticSnake extends Snake {
 	public void moveTowardsGoal() throws InterruptedException {
 		BoardPosition goalPosition = board.getGoalPosition();
 		BoardPosition currentHeadPosition = cells.getLast().getPosition();
+		
 		System.out.println("GOAL POSITION" + goalPosition + "  [ID]" + getIdentification());
 		System.out.println("CURRENT POSITION" + currentHeadPosition + "   [ID]" + getIdentification());
 	

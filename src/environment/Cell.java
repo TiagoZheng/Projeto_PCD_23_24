@@ -18,6 +18,7 @@ public class Cell {
 	private BoardPosition position;
 	private Snake ocuppyingSnake = null;
 	private GameElement gameElement=null;
+	public BoardPosition isOcupiedByGoal;
 	
 	public GameElement getGameElement() {
 		return gameElement;
@@ -67,10 +68,10 @@ public class Cell {
 
 	public  Goal removeGoal() {
 		// TODO
-		return null;
+		return (Goal)(gameElement = null);
 	}
 	public void removeObstacle() {
-	//TODO
+		//TODO
 	}
 
 

@@ -20,7 +20,7 @@ public class Goal extends GameElement  {
 		return value;
 	}
 	public void incrementValue() throws InterruptedException {
-		//TODO
+		value++;
 		
 	}
 
@@ -32,5 +32,6 @@ public class Goal extends GameElement  {
 	public static BoardPosition getCurrentPosition() {
 		return currentPosition;
 	}
+
 
 }

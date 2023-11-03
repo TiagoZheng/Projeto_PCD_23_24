@@ -42,20 +42,23 @@ public abstract class Snake extends Thread implements Serializable{
 		return cells;
 	}
 	protected void move(Cell nextCell) throws InterruptedException {
-		// cells.addLast(cell);
-		// cell.request(this);
-		// cells.getFirst().release();
-		// TODO
-		// cells.addLast(cell);
-		// cell.request(this);
-		// cells.removeFirst().release();
-		// System.out.println(cells.getLast().getPosition() + "Lista da cobra");
+		//TODO
+		if(nextCell.isOcupiedByGoal()) {
+			this.cells.add(nextCell);
+			nextCell.removeGoal();
+			board.addGameElement(new Goal(board));
+			
+			/* TODO Goal Captured
+				1. Increment goal value by 1
+				2. Relocate goal to another place
+			 */  
 
-		//
-		nextCell.request(this);
-		cells.add(nextCell);
-		cells.removeFirst().release();
-		SnakeGui.updatePosition();
+		} else {
+			nextCell.request(this);
+			cells.add(nextCell);
+			cells.removeFirst().release();
+		}
+		SnakeGui.updatePosition();	
 		
 	}
 	

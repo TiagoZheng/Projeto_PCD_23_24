@@ -24,7 +24,7 @@ public class AutomaticSnake extends Snake {
     	try {
         	while (true) {
             	moveTowardsGoal();
-            	Thread.sleep(1000); 
+            	Thread.sleep(200); 
         	}
     	} catch (InterruptedException e) {
         	e.printStackTrace();
@@ -38,8 +38,8 @@ public class AutomaticSnake extends Snake {
 		BoardPosition goalPosition = board.getGoalPosition();
 		BoardPosition currentHeadPosition = cells.getLast().getPosition();
 		
-		System.out.println("GOAL POSITION" + goalPosition + "  [ID]" + getIdentification());
-		System.out.println("CURRENT POSITION" + currentHeadPosition + "   [ID]" + getIdentification());
+		// System.out.println("GOAL POSITION" + goalPosition + "  [ID]" + getIdentification());
+		// System.out.println("CURRENT POSITION" + currentHeadPosition + "   [ID]" + getIdentification());
 	
 		int dx = goalPosition.x - currentHeadPosition.x;
 		int dy = goalPosition.y - currentHeadPosition.y;
@@ -47,22 +47,16 @@ public class AutomaticSnake extends Snake {
 	
 		if (Math.abs(dx) > Math.abs(dy)) {
 			if (dx > 0) {
-				// Move right
 				nextCell = board.getCell(currentHeadPosition.getCellRight());
 			} else {
-				// Move left
 				nextCell = board.getCell(currentHeadPosition.getCellLeft());
-				
 			}
 		} else {
 			if (dy > 0) {
-				// Move down
 				nextCell = board.getCell(currentHeadPosition.getCellBelow());
 
 			} else {
-				// Move up
 				nextCell = board.getCell(currentHeadPosition.getCellAbove());
-
 			}
 		}
 		move(nextCell);

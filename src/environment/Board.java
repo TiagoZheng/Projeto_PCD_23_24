@@ -79,8 +79,6 @@ public abstract class Board extends Observable {
 
 	}
 
-	
-
 	protected Goal addGoal() {
 		Goal goal=new Goal(this);
 		addGameElement(goal);

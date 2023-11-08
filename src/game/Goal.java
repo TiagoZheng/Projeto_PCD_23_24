@@ -20,13 +20,12 @@ public class Goal extends GameElement  {
 		return value;
 	}
 	public void incrementValue() throws InterruptedException {
-		value++;
-		
+		if(value < MAX_VALUE)
+			value++;
 	}
 
 	public int captureGoal() {
-//		TODO
-		return -1;
+		return value;
 	}
 
 	public static BoardPosition getCurrentPosition() {

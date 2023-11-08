@@ -44,24 +44,31 @@ public abstract class Snake extends Thread implements Serializable{
 	protected void move(Cell nextCell) throws InterruptedException {
 		//TODO
 		if(nextCell.isOcupiedByGoal()) {
-			this.cells.add(nextCell);
+			Goal currentGoal = nextCell.getGoal();
 			nextCell.removeGoal();
-			board.addGameElement(new Goal(board));
-			
-			/* TODO Goal Captured
-				1. Increment goal value by 1
-				2. Relocate goal to another place
-			 */  
+			this.cells.add(nextCell);
+			currentGoal.incrementValue();
+			board.addGameElement(currentGoal);
+
+		// } else if(nextCell.isOcupied()) {
 
 		} else {
 			nextCell.request(this);
-			cells.add(nextCell);
 			cells.removeFirst().release();
+			cells.add(nextCell);
+			
 		}
 		SnakeGui.updatePosition();	
 		
 	}
 	
+	private BoardPosition chooseNextPosition(LinkedList<BoardPosition> neighboringPositions) {
+        // Implement the logic to choose the next position based on neighboring positions
+        // For example, you can randomly select one of the neighboring positions
+        int randomIndex = (int) (Math.random() * neighboringPositions.size());
+        return neighboringPositions.get(randomIndex);
+    }
+
 	public LinkedList<BoardPosition> getPath() {
 		LinkedList<BoardPosition> coordinates = new LinkedList<BoardPosition>();
 		for (Cell cell : cells) {

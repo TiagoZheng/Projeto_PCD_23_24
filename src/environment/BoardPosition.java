@@ -1,5 +1,7 @@
 package environment;
 
+import game.Goal;
+
 /** Classe representing a position on the board, with some utilities
  * 
  * @author luismota
@@ -45,4 +47,12 @@ public class BoardPosition {
 	public BoardPosition getCellRight() {
 		return new BoardPosition(x+1, y);
 	}
+
+	public boolean isOcupiedByGoal() {
+		return false;
+	}
+
+    public Goal getGoal() {
+        return null;
+    }
 }

@@ -34,13 +34,17 @@ public class Cell {
 		return position;
 	}
 
-	public void request(Snake snake)
+	public synchronized void request(Snake snake)
 			throws InterruptedException {
 		//TODO coordination and mutual exclusion
+		while (isOcupied()) {
+			System.out.println("this is something");
+			wait();
+		}
 		ocuppyingSnake=snake;
 	}
 
-	public void release() {
+	public synchronized void release() {
 		//TODO
 		ocuppyingSnake=null;
 	}

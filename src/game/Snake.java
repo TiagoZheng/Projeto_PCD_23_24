@@ -1,6 +1,7 @@
 package game;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import environment.LocalBoard;
@@ -41,32 +42,17 @@ public abstract class Snake extends Thread implements Serializable{
 	public LinkedList<Cell> getCells() {
 		return cells;
 	}
+	
 	protected void move(Cell nextCell) throws InterruptedException {
-		//TODO
-		if(nextCell.isOcupiedByGoal()) {
-			Goal currentGoal = nextCell.getGoal();
-			nextCell.removeGoal();
-			this.cells.add(nextCell);
-			currentGoal.incrementValue();
-			board.addGameElement(currentGoal);
-
-		// } else if(nextCell.isOcupied()) {
-
-		} else {
-			nextCell.request(this);
-			cells.removeFirst().release();
-			cells.add(nextCell);
-			
-		}
-		SnakeGui.updatePosition();	
-		
+		nextCell.request(this, board);
+		cells.removeFirst().release();
+		cells.add(nextCell);
+		board.setChanged();	
 	}
 	
-	private BoardPosition chooseNextPosition(LinkedList<BoardPosition> neighboringPositions) {
-        // Implement the logic to choose the next position based on neighboring positions
-        // For example, you can randomly select one of the neighboring positions
-        int randomIndex = (int) (Math.random() * neighboringPositions.size());
-        return neighboringPositions.get(randomIndex);
+	public BoardPosition chooseNextPosition(ArrayList<BoardPosition> validCell) {
+        int randomIndex = (int) (Math.random() * validCell.size());
+        return validCell.get(randomIndex);
     }
 
 	public LinkedList<BoardPosition> getPath() {
@@ -84,7 +70,7 @@ public abstract class Snake extends Thread implements Serializable{
 		BoardPosition at = new BoardPosition(posX, posY);
 		
 		try {
-			board.getCell(at).request(this);
+			board.getCell(at).request(this, board);
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}

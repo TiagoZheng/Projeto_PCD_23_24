@@ -20,7 +20,7 @@ public abstract class Board extends Observable {
 	public static final int NUM_ROWS = 30;
 	protected LinkedList<Snake> snakes = new LinkedList<Snake>();
 	private LinkedList<Obstacle> obstacles= new LinkedList<Obstacle>();
-	protected boolean isFinished;
+	private boolean isFinished;
 	public char[] getGoalPosition;
 
 	public Board() {
@@ -85,7 +85,7 @@ public abstract class Board extends Observable {
 		return goal;
 	}
 
-	protected void addObstacles(int numberObstacles) {
+	public void addObstacles(int numberObstacles) {
 		// clear obstacle list , necessary when resetting obstacles.
 		getObstacles().clear();
 		while(numberObstacles>0) {
@@ -126,4 +126,11 @@ public abstract class Board extends Observable {
 	}
 
 
+	public void setFinished(boolean isFinished) {
+        this.isFinished = isFinished;
+    }
+
+    public boolean isFinished() {
+        return isFinished;
+    }
 }

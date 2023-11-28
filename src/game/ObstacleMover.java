@@ -1,5 +1,10 @@
 package game;
 
+import java.util.List;
+
+import environment.Board;
+import environment.BoardPosition;
+import environment.Cell;
 import environment.LocalBoard;
 
 public class ObstacleMover extends Thread {
@@ -14,6 +19,12 @@ public class ObstacleMover extends Thread {
 
 	@Override
 	public void run() {
-		
+		System.out.println("OBSTACULOS");
+		while (obstacle.getRemainingMoves() > 0 ) {
+			BoardPosition pos = board.getGoalPosition();
+			Cell nextCell = new Cell(pos);
+			obstacle.setCurrentCell(nextCell);
+			
+		}
 	}
 }

@@ -19,6 +19,7 @@ public class Cell {
 	private Snake ocuppyingSnake = null;
 	private GameElement gameElement=null;
 	public BoardPosition isOcupiedByGoal;
+	private Board board;
 	
 	public GameElement getGameElement() {
 		return gameElement;
@@ -34,19 +35,30 @@ public class Cell {
 		return position;
 	}
 
-	public synchronized void request(Snake snake)
+	public synchronized void request(Snake snake, Board board)
 			throws InterruptedException {
-		//TODO coordination and mutual exclusion
+
 		while (isOcupied()) {
 			System.out.println("this is something");
 			wait();
 		}
+
+		if (isOcupiedByGoal()) {
+			Goal currentGoal = getGoal();
+			currentGoal.incrementValue();
+			removeGoal();
+			notifyAll();;
+
+			board.addGameElement(currentGoal);
+		}
+
 		ocuppyingSnake=snake;
 	}
 
 	public synchronized void release() {
 		//TODO
 		ocuppyingSnake=null;
+		notifyAll();
 	}
 
 	public boolean isOcupiedBySnake() {
@@ -54,7 +66,7 @@ public class Cell {
 	}
 
 
-	public  void setGameElement(GameElement element) {
+	public  synchronized void setGameElement(GameElement element) {
 		// TODO coordination and mutual exclusion
 		gameElement=element;
 
@@ -74,8 +86,10 @@ public class Cell {
 		// TODO
 		return (Goal)(gameElement = null);
 	}
+	
 	public void removeObstacle() {
-		//TODO
+		gameElement = null;
+
 	}
 
 

@@ -3,6 +3,7 @@ package game;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import environment.LocalBoard;
 import gui.SnakeGui;
@@ -44,15 +45,16 @@ public abstract class Snake extends Thread implements Serializable{
 	}
 	
 	protected void move(Cell nextCell) throws InterruptedException {
-		nextCell.request(this, board);
-		cells.removeFirst().release();
-		cells.add(nextCell);
-		board.setChanged();	
+			nextCell.request(this, board);
+			cells.removeFirst().release();
+			cells.add(nextCell);
+			board.setChanged();	
+
 	}
 	
-	public BoardPosition chooseNextPosition(ArrayList<BoardPosition> validCell) {
-        int randomIndex = (int) (Math.random() * validCell.size());
-        return validCell.get(randomIndex);
+	public BoardPosition chooseNextPosition(List<BoardPosition> validNeighboringPositions) {
+        int randomIndex = (int) (Math.random() * validNeighboringPositions.size());
+        return validNeighboringPositions.get(randomIndex);
     }
 
 	public LinkedList<BoardPosition> getPath() {
@@ -81,5 +83,17 @@ public abstract class Snake extends Thread implements Serializable{
 	public Board getBoard() {
 		return board;
 	}
-	
+
+	// public void resetDirection() throws InterruptedException {
+	// 	BoardPosition currentHeadPosition = cells.getLast().getPosition();
+	// 	List<BoardPosition> validNeighboringPositions = board.getNeighboringPositions(board.getCell(currentHeadPosition));
+
+	// 	if (!validNeighboringPositions.isEmpty()) {
+	// 		BoardPosition newDirection = chooseNextPosition(validNeighboringPositions);
+	// 		Cell nextMove = board.getCell(newDirection);
+	// 		move(nextMove);
+	// 	}
+	// }
+
+
 }

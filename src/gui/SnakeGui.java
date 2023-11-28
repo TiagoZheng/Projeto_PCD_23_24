@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.net.StandardSocketOptions;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -14,6 +15,7 @@ import javax.swing.JFrame;
 
 import environment.Board;
 import environment.LocalBoard;
+import game.AutomaticSnake;
 import game.Snake;
 /**
  *  Class to create and configure GUI.
@@ -49,14 +51,14 @@ public class SnakeGui implements Observer {
 		JButton resetObstaclesButton=new JButton("Reset snakes' directions");
 		resetObstaclesButton.addActionListener(new ActionListener() {
 			
-			@Override
+		    @Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO
-				for(Snake s : board.getSnakes()){
-					
+				for (Snake snake : board.getSnakes()) {
+					if (snake instanceof AutomaticSnake) {
+						((AutomaticSnake) snake).resetDirection();
+					}
 				}
 			}
-				
 		});
 		frame.add(resetObstaclesButton,BorderLayout.SOUTH);
 		

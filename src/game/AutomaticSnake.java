@@ -39,46 +39,46 @@ public class AutomaticSnake extends Snake {
 		BoardPosition goalPosition = board.getGoalPosition();
 		BoardPosition currentHeadPosition = cells.getLast().getPosition();
 
-
+		List<BoardPosition> validNeighboringPositions = board.getNeighboringPositions(board.getCell(currentHeadPosition));
 		
-		// System.out.println("GOAL POSITION" + goalPosition + "  [ID]" + getIdentification());
-		// System.out.println("CURRENT POSITION" + currentHeadPosition + "   [ID]" + getIdentification());
+
+		if (!validNeighboringPositions.isEmpty()) {
+			int minDistance = Integer.MAX_VALUE;
+			BoardPosition nextMove = null;
 	
-
-	
- // TODO USE THE METHOD chooseNextPosition IN THE CLASS SNAKE
- /* 
-		Cell currentHeadPosition = cells.getLast();
-		ArrayList<BoardPosition> validCell = new ArrayList<BoardPosition>();
-		validCell = (ArrayList<BoardPosition>) board.getNeighboringPositions(currentHeadPosition);
-
-		BoardPosition nextMove = chooseNextPosition(validCell);
-		Cell next = new Cell (new BoardPosition(nextMove.x,nextMove.y));
-		System.out.println("CURRENT POSITION( x: " + currentHeadPosition.getPosition().x + " y: " + currentHeadPosition.getPosition().y + " ) [ID]" + getIdentification());
-		move(next);
-*/
-
-  
-		int dx = goalPosition.x - currentHeadPosition.x;
-		int dy = goalPosition.y - currentHeadPosition.y;
-		Cell nextCell;
-
-		if (Math.abs(dx) > Math.abs(dy)) {
-			if (dx > 0) {
-				nextCell = board.getCell(currentHeadPosition.getCellRight());
-			} else {
-				nextCell = board.getCell(currentHeadPosition.getCellLeft());
+			for (BoardPosition neighbor : validNeighboringPositions) {
+				int distance = calculateDistance(neighbor, goalPosition);
+				if (distance < minDistance) {
+					minDistance = distance;
+					nextMove = neighbor;
+				}
 			}
-		} else {
-			if (dy > 0) {
-				nextCell = board.getCell(currentHeadPosition.getCellBelow());
-
-			} else {
-				nextCell = board.getCell(currentHeadPosition.getCellAbove());
+	
+			if (nextMove != null) {
+				Cell nextCell = board.getCell(nextMove);
+				move(nextCell);
 			}
 		}
-		move(nextCell);
-
-
 	}
+
+	public void resetDirection(){
+		BoardPosition currentHeadPosition = cells.getLast().getPosition();
+		List<BoardPosition> validNeighboringPositions = board.getNeighboringPositions(board.getCell(currentHeadPosition));
+
+			try {
+				if (!validNeighboringPositions.isEmpty()) {
+				BoardPosition newDirection = chooseNextPosition(validNeighboringPositions);
+				Cell nextMove = board.getCell(newDirection);
+				move(nextMove);
+				}
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	}	
+
+	private int calculateDistance(BoardPosition position1, BoardPosition position2) {
+		return Math.abs(position1.x - position2.x) + Math.abs(position1.y - position2.y);
+	}
+
 }

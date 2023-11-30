@@ -51,6 +51,7 @@ public class SnakeGui implements Observer {
 		JButton resetObstaclesButton=new JButton("Reset snakes' directions");
 		resetObstaclesButton.addActionListener(new ActionListener() {
 			
+			// Button
 		    @Override
 			public void actionPerformed(ActionEvent e) {
 				for (Snake snake : board.getSnakes()) {
@@ -60,8 +61,8 @@ public class SnakeGui implements Observer {
 				}
 			}
 		});
+
 		frame.add(resetObstaclesButton,BorderLayout.SOUTH);
-		
 		
 		frame.pack();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

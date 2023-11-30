@@ -7,7 +7,7 @@ import environment.LocalBoard;
 public class Obstacle extends GameElement {
 	
 	
-	private static final int NUM_MOVES=3;
+	static final int NUM_MOVES=3;
 	static final int OBSTACLE_MOVE_INTERVAL = 400;
 	private int remainingMoves=NUM_MOVES;
 	private Board board;
@@ -17,11 +17,12 @@ public class Obstacle extends GameElement {
 		super();
 		this.currentCell = null;
 		this.board = board;
-		//startMoverThread();
+		startMoverThread();
 	}
 
 	private void startMoverThread() {
         ObstacleMover mover = new ObstacleMover(this, (LocalBoard) board);
+		System.out.println("MOVING OBJECTS");
         mover.start();
     }
 	

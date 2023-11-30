@@ -19,12 +19,25 @@ public class ObstacleMover extends Thread {
 
 	@Override
 	public void run() {
-		System.out.println("OBSTACULOS");
-		while (obstacle.getRemainingMoves() > 0 ) {
-			BoardPosition pos = board.getGoalPosition();
-			Cell nextCell = new Cell(pos);
-			obstacle.setCurrentCell(nextCell);
-			
+
+		for(int i = 0 ; i < obstacle.NUM_MOVES; i++) {
+			moveObstacleToRandomCell();
+
 		}
+		// System.out.println("OBSTACULOS");
+		// while (obstacle.getRemainingMoves() > 0 ) {
+		// 	BoardPosition pos = board.getGoalPosition();
+		// 	Cell nextCell = new Cell(pos);
+		// 	obstacle.setCurrentCell(nextCell);
+			
+		// }
+
+	}
+
+	private void moveObstacleToRandomCell() {
+		BoardPosition randomPosition = board.getRandomPosition();
+		Cell nextCell = board.getCell(randomPosition);
+		obstacle.setCurrentCell(nextCell);
+		obstacle.decrementMoves();
 	}
 }

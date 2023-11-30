@@ -45,11 +45,11 @@ public abstract class Snake extends Thread implements Serializable{
 	}
 	
 	protected void move(Cell nextCell) throws InterruptedException {
+		System.out.println("MOVING MOVING MOVING");
 			nextCell.request(this, board);
 			cells.removeFirst().release();
 			cells.add(nextCell);
 			board.setChanged();	
-
 	}
 	
 	public BoardPosition chooseNextPosition(List<BoardPosition> validNeighboringPositions) {
@@ -64,6 +64,7 @@ public abstract class Snake extends Thread implements Serializable{
 		}
 		return coordinates;
 	}	
+
 	protected void doInitialPositioning() {
 		// Random position on the first column. 
 		// At startup, snake occupies a single cell
@@ -77,7 +78,7 @@ public abstract class Snake extends Thread implements Serializable{
 			e1.printStackTrace();
 		}
 		cells.add(board.getCell(at));
-		System.err.println("Snake "+getIdentification()+" starting at:"+getCells().getLast().toString());		
+		System.err.println("Snake " + getIdentification() + " starting at:"+getCells().getLast().toString());		
 	}
 	
 	public Board getBoard() {

@@ -1,4 +1,7 @@
 1. Snake aumentar tamanho dependendo to valor do Goal
+2. End of game
 
-2. Apos carregar no botao reset as Snakes param de andar 
+a. Mover Obstaculos acho que esta feito mas onde devo chamar a funcao para que funcione?
+b. Apos carregar no botao reset as Snakes param de andar
+c. Nao estou a conseguir da debug sysout nao aparecem na consola
 

@@ -31,7 +31,6 @@ public class ObstacleMover extends Thread {
 				moveObstacle();
 			});
 		}
-
 		threadPool.shutdown();
 	}
 

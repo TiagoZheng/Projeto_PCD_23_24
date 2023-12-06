@@ -1,4 +1,3 @@
-1. Ainda esta a ir para cima de si proprio (Claase Automatic player)
+1. Quando chega a um goal aumantar conforme o valor da goal (Classe Snake)
 
-
-2. Quando chega a um goal aumantar conforme o valor da goal (Classe Snake)
+3.ThreadPool nao esta funcionar direito estao todas a mexer em vez do numero indicado

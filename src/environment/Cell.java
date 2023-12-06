@@ -67,6 +67,7 @@ public class Cell {
 	public  synchronized void setGameElement(GameElement element) {
 		// TODO coordination and mutual exclusion
 		gameElement=element;
+		notifyAll();
 
 	}
 
@@ -87,6 +88,7 @@ public class Cell {
 	public void removeObstacle() {
 		//TODO
 		gameElement = null;
+		notifyAll();
 	}
 
 

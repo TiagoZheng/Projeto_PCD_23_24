@@ -13,6 +13,7 @@ public class Main {
 		LocalBoard board=new LocalBoard();
 		SnakeGui game = new SnakeGui(board,600,0);
 		game.init();
+
 		// Launch server
 		// TODO
 		

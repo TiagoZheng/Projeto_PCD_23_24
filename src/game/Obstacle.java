@@ -7,8 +7,7 @@ import environment.LocalBoard;
 
 public class Obstacle extends GameElement {
 	
-	
-	private static final int NUM_MOVES=4;
+	private static final int NUM_MOVES=9;
 	static final int OBSTACLE_MOVE_INTERVAL = 700;
 	private int remainingMoves=NUM_MOVES;
 	private Board board;
@@ -33,6 +32,10 @@ public class Obstacle extends GameElement {
 		newCell.setGameElement(this);
 		currentPosition = newPosition;
 		remainingMoves--;
+	}
+	
+	public BoardPosition getInitialPosition(BoardPosition pos){
+		return pos;
 	}
 
 }

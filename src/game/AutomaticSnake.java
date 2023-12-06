@@ -14,12 +14,8 @@ import environment.BoardPosition;
 
 public class AutomaticSnake extends Snake {
 
-	
-
-
 	public AutomaticSnake(int id, LocalBoard board) {
 		super(id,board);
-
 	}
 
 	@Override
@@ -29,8 +25,13 @@ public class AutomaticSnake extends Snake {
 		//cells.getLast().request(this); //Put in boardcell
 
 		// Automatic movement
-		while (true) {
+		while (!Thread.interrupted()) {
 			try {
+				if(board.isGameFinished()){
+					System.out.println("Game End!");
+					break;
+				}	
+				// System.out.println("FINITO? " + board.isGameFinished());
 				move(nextCell());
 				Thread.sleep(Board.PLAYER_PLAY_INTERVAL);
 

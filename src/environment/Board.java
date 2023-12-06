@@ -15,13 +15,14 @@ public abstract class Board extends Observable {
 	protected Cell[][] cells;
 	private BoardPosition goalPosition;
 	// private BoardPosition osbtaclePosition;
-	public static final long PLAYER_PLAY_INTERVAL = 200;
+	public static final long PLAYER_PLAY_INTERVAL = 100;
 	public static final long REMOTE_REFRESH_INTERVAL = 200;
 	public static final int NUM_COLUMNS = 30;
 	public static final int NUM_ROWS = 30;
 	protected LinkedList<Snake> snakes = new LinkedList<Snake>();
 	private LinkedList<Obstacle> obstacles= new LinkedList<Obstacle>();
 	protected boolean isFinished;
+	private Goal goal=new Goal(this);
 
 	public Board() {
 		cells = new Cell[NUM_COLUMNS][NUM_ROWS];
@@ -30,7 +31,6 @@ public abstract class Board extends Observable {
 				cells[x][y] = new Cell(new BoardPosition(x, y));
 			}
 		}
-
 	}
 
 	public Cell getCell(BoardPosition cellCoord) {
@@ -79,10 +79,9 @@ public abstract class Board extends Observable {
 
 	}
 
-	
 	protected Goal addGoal() {
-		Goal goal=new Goal(this);
-		addGameElement( goal);
+		//Goal goal=new Goal(this);
+		addGameElement(goal);
 		return goal;
 	}
 
@@ -91,7 +90,7 @@ public abstract class Board extends Observable {
 		getObstacles().clear();
 		while(numberObstacles>0) {
 			Obstacle obs=new Obstacle(this);
-			addGameElement( obs);
+			// addGameElement(obs);
 			getObstacles().add(obs);
 			numberObstacles--;
 		}
@@ -112,19 +111,29 @@ public abstract class Board extends Observable {
 		return obstacles;
 	}
 
-	
+
 	public abstract void init(); 
 	
 	public abstract void handleKeyPress(int keyCode);
 
 	public abstract void handleKeyRelease();
 	
-	
-	
-
 	public void addSnake(Snake snake) {
 		snakes.add(snake);
 	}
 
+	public boolean isGameFinished(){
+		if(goal.getValue() > 9){
+			System.out.println("ACABOU");
+			return true;
+		}
+		return false;
+	}
+
+	public void endGame(){
+		for (Snake s : snakes) {
+			s.interrupt();
+		}
+	}
 
 }

@@ -14,102 +14,82 @@ import environment.BoardPosition;
 
 public class AutomaticSnake extends Snake {
 
+	
+
+
 	public AutomaticSnake(int id, LocalBoard board) {
 		super(id,board);
+
 	}
 
 	@Override
 	public void run() {
 		doInitialPositioning();
-    	System.err.println("Initial size:" + cells.size());
-    	try {
-        	while (true) {
-            	moveTowardsGoal();
-            	Thread.sleep(200); 
-        	}
-    	} catch (InterruptedException e) {
-        	e.printStackTrace();
-    	}
-		
-	}
-		
+		//System.err.println("initial size:"+cells.size());
+		//cells.getLast().request(this); //Put in boardcell
 
-	public void moveTowardsGoal() throws InterruptedException {
-		BoardPosition goalPosition = board.getGoalPosition();
-		BoardPosition currentHeadPosition = cells.getLast().getPosition();
-	
-		List<BoardPosition> validNeighboringPositions = board.getNeighboringPositions(board.getCell(currentHeadPosition));
-	
-		if (!validNeighboringPositions.isEmpty()) {
-			int minDistance = Integer.MAX_VALUE;
-			BoardPosition nextMove = null;
-	
-			for (BoardPosition neighbor : validNeighboringPositions) {
-				System.out.println("Checking where to go....");
-				int distance = calculateDistance(neighbor, goalPosition);
-				if (distance < minDistance) {
-					minDistance = distance;
-					nextMove = neighbor;
-				}
-			}
-	
-			if (nextMove != null) {
-				Cell nextCell = board.getCell(nextMove);
-	
-				// Check if the next cell contains a goal
-				if (nextCell.isOcupiedByGoal()) {
-					Goal goal = nextCell.getGoal();
-					int goalValue = goal.captureGoal();
-	
-					// Increase the size of the snake based on the goal value
-					for (int i = 0; i < goalValue; i++) {
-						// Add new cells to the snake
-						Cell newCell = new Cell(nextMove);
-						System.out.println("Got the goal going to get bigger");
-						cells.addFirst(newCell);
-						board.setChanged();
-					}
-	
-					// Remove the goal from the cell
-					nextCell.removeGoal();
+		// Automatic movement
+		while (true) {
+			try {
+				move(nextCell());
+				Thread.sleep(Board.PLAYER_PLAY_INTERVAL);
 
-					 // Check if the game should stop
-					if (goalValue >= Goal.MAX_VALUE) {
-						board.setFinished(true);
-						System.out.println("Game End - Maximum Goal Value Reached!");
-						return;
-					}
-					
-				}
-	
-				// Move the snake to the next cell
-				move(nextCell);
-				System.out.println("MOVING!!");
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}
+	
+	// Where to go next
+	private Cell nextCell(){
+		LinkedList<BoardPosition> nextMove = chooseDirection();
+		int i = randomValue(nextMove.size());
 
-	public void resetDirection(){
-		BoardPosition currentHeadPosition = cells.getLast().getPosition();
-		List<BoardPosition> validNeighboringPositions = board.getNeighboringPositions(board.getCell(currentHeadPosition));
-
-			try {
-				System.out.println("CHANGED DIRECTION");
-				if (!validNeighboringPositions.isEmpty()) {
-				BoardPosition newDirection = chooseNextPosition(validNeighboringPositions);
-				Cell nextMove = board.getCell(newDirection);
-				move(nextMove);
-				
-				}
-
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			
-	}	
-
-	private int calculateDistance(BoardPosition position1, BoardPosition position2) {
+		return board.getCell(nextMove.get(i));
+	}
+	
+	private int distanceToGoal(BoardPosition position1, BoardPosition position2){
 		return Math.abs(position1.x - position2.x) + Math.abs(position1.y - position2.y);
 	}
 
+	private LinkedList<BoardPosition> chooseDirection(){
+		BoardPosition goalPosition = board.getGoalPosition();
+		BoardPosition headPosition = cells.getLast().getPosition();
+		List<BoardPosition> validNeighboringPositions = board.getNeighboringPositions(board.getCell(headPosition));
+		// System.out.println("VALID: " + validNeighboringPositions);
+		LinkedList<BoardPosition> nextGoodMove = new LinkedList<BoardPosition>();
+
+		if (this.getLength() > 1){
+			LinkedList<BoardPosition> ListBP = cellToBoardPosition(this.cells);
+			// System.out.println("PREV: " + bp);
+			for(BoardPosition bp : ListBP)
+				validNeighboringPositions.remove(bp);
+			// System.out.println("NEW_VALID: " + validNeighboringPositions);
+		}
+
+		int distance = distanceToGoal(headPosition, goalPosition);
+
+		for(BoardPosition neighbor : validNeighboringPositions) {
+			// System.out.println("NEIGHBOR: " + neighbor);
+			int newDistance = distanceToGoal(goalPosition, neighbor);
+			if(newDistance < distance){
+				nextGoodMove.add(neighbor);
+			}
+		}
+		return nextGoodMove;
+	}
+
+	private int randomValue (int i) {
+		return (int) (Math.random() * i);
+	}
+
+	public LinkedList<BoardPosition> cellToBoardPosition (LinkedList<Cell> cells) {
+		LinkedList<BoardPosition> bp = new LinkedList<BoardPosition>();
+		for(Cell c : cells){
+			bp.add(c.getPosition());
+		}
+		return bp;
+	}
 }
+

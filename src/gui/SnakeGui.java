@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.net.StandardSocketOptions;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -15,8 +14,6 @@ import javax.swing.JFrame;
 
 import environment.Board;
 import environment.LocalBoard;
-import game.AutomaticSnake;
-import game.Snake;
 /**
  *  Class to create and configure GUI.
  *  Only the listener to the button should be edited, see TODO below.
@@ -25,12 +22,12 @@ import game.Snake;
  *
  */
 public class SnakeGui implements Observer {
-	public static final int BOARD_WIDTH = 700;
-	public static final int BOARD_HEIGHT = 700;
+	public static final int BOARD_WIDTH = 800;
+	public static final int BOARD_HEIGHT = 800;
 	public static final int NUM_COLUMNS = 40;
 	public static final int NUM_ROWS = 30;
-	private static JFrame frame;
-	private static BoardComponent boardGui;
+	private JFrame frame;
+	private BoardComponent boardGui;
 	private Board board;
 
 	public SnakeGui(Board board, int x,int y) {
@@ -51,18 +48,14 @@ public class SnakeGui implements Observer {
 		JButton resetObstaclesButton=new JButton("Reset snakes' directions");
 		resetObstaclesButton.addActionListener(new ActionListener() {
 			
-			// Button
-		    @Override
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				for (Snake snake : board.getSnakes()) {
-					if (snake instanceof AutomaticSnake) {
-						((AutomaticSnake) snake).resetDirection();
-					}
-				}
+				// TODO
 			}
+				
 		});
-
 		frame.add(resetObstaclesButton,BorderLayout.SOUTH);
+		
 		
 		frame.pack();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -76,10 +69,6 @@ public class SnakeGui implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		boardGui.repaint();
-	}
-
-	public static void updatePosition(){
 		boardGui.repaint();
 	}
 }

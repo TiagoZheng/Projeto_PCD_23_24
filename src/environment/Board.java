@@ -14,14 +14,14 @@ import game.Snake;
 public abstract class Board extends Observable {
 	protected Cell[][] cells;
 	private BoardPosition goalPosition;
-	public static final long PLAYER_PLAY_INTERVAL = 100;
+	// private BoardPosition osbtaclePosition;
+	public static final long PLAYER_PLAY_INTERVAL = 200;
 	public static final long REMOTE_REFRESH_INTERVAL = 200;
 	public static final int NUM_COLUMNS = 30;
 	public static final int NUM_ROWS = 30;
 	protected LinkedList<Snake> snakes = new LinkedList<Snake>();
 	private LinkedList<Obstacle> obstacles= new LinkedList<Obstacle>();
-	private boolean isFinished;
-	public char[] getGoalPosition;
+	protected boolean isFinished;
 
 	public Board() {
 		cells = new Cell[NUM_COLUMNS][NUM_ROWS];
@@ -57,7 +57,7 @@ public abstract class Board extends Observable {
 				getCell(pos).setGameElement(gameElement);
 				if(gameElement instanceof Goal) {
 					setGoalPosition(pos);
-					System.out.println("Goal placed at:"+pos);
+//					System.out.println("Goal placed at:"+pos);
 				}
 				placed=true;
 			}
@@ -65,8 +65,8 @@ public abstract class Board extends Observable {
 	}
 
 	public List<BoardPosition> getNeighboringPositions(Cell cell) {
-		ArrayList<BoardPosition> possibleCells=new ArrayList<BoardPosition>();
-		BoardPosition pos=cell.getPosition();
+		ArrayList<BoardPosition> possibleCells = new ArrayList<BoardPosition>();
+		BoardPosition pos = cell.getPosition();
 		if(pos.x>0)
 			possibleCells.add(pos.getCellLeft());
 		if(pos.x<NUM_COLUMNS-1)
@@ -79,18 +79,19 @@ public abstract class Board extends Observable {
 
 	}
 
+	
 	protected Goal addGoal() {
 		Goal goal=new Goal(this);
-		addGameElement(goal);
+		addGameElement( goal);
 		return goal;
 	}
 
-	public void addObstacles(int numberObstacles) {
+	protected void addObstacles(int numberObstacles) {
 		// clear obstacle list , necessary when resetting obstacles.
 		getObstacles().clear();
 		while(numberObstacles>0) {
 			Obstacle obs=new Obstacle(this);
-			addGameElement(obs);
+			addGameElement( obs);
 			getObstacles().add(obs);
 			numberObstacles--;
 		}
@@ -126,11 +127,4 @@ public abstract class Board extends Observable {
 	}
 
 
-	public void setFinished(boolean isFinished) {
-        this.isFinished = isFinished;
-    }
-
-    public boolean isFinished() {
-        return isFinished;
-    }
 }

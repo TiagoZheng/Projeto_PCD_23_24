@@ -1,8 +1,8 @@
 package game;
 
-import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-import environment.Board;
 import environment.BoardPosition;
 import environment.Cell;
 import environment.LocalBoard;
@@ -15,29 +15,34 @@ public class ObstacleMover extends Thread {
 		super();
 		this.obstacle = obstacle;
 		this.board = board;
-	}
+    }	
 
 	@Override
 	public void run() {
-
-		for(int i = 0 ; i < obstacle.NUM_MOVES; i++) {
-			moveObstacleToRandomCell();
-
-		}
-		// System.out.println("OBSTACULOS");
-		// while (obstacle.getRemainingMoves() > 0 ) {
-		// 	BoardPosition pos = board.getGoalPosition();
-		// 	Cell nextCell = new Cell(pos);
-		// 	obstacle.setCurrentCell(nextCell);
-			
-		// }
-
+		// TODO
+		moveObstacles(obstacle.getRemainingMoves());
 	}
 
-	private void moveObstacleToRandomCell() {
-		BoardPosition randomPosition = board.getRandomPosition();
-		Cell nextCell = board.getCell(randomPosition);
-		obstacle.setCurrentCell(nextCell);
-		obstacle.decrementMoves();
+	public void moveObstacles(int numMoves){
+		ExecutorService threadPool = Executors.newFixedThreadPool(board.NUM_SIMULTANEOUS_MOVING_OBSTACLES);
+
+		for (int i = 0; i < numMoves; i++) {
+			threadPool.submit( () -> {
+				moveObstacle();
+			});
+		}
+
+		threadPool.shutdown();
+	}
+
+	public void moveObstacle(){
+		try {
+			BoardPosition bp = board.getRandomPosition();
+			obstacle.move(bp);
+			Thread.sleep(Obstacle.OBSTACLE_MOVE_INTERVAL);
+			
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 }

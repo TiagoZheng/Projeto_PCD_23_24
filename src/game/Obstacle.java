@@ -1,45 +1,38 @@
 package game;
 
 import environment.Board;
+import environment.BoardPosition;
 import environment.Cell;
 import environment.LocalBoard;
 
 public class Obstacle extends GameElement {
 	
 	
-	static final int NUM_MOVES=3;
-	static final int OBSTACLE_MOVE_INTERVAL = 400;
+	private static final int NUM_MOVES=4;
+	static final int OBSTACLE_MOVE_INTERVAL = 700;
 	private int remainingMoves=NUM_MOVES;
 	private Board board;
-	private Cell currentCell;
+	private BoardPosition currentPosition;
 
 	public Obstacle(Board board) {
 		super();
-		this.currentCell = null;
 		this.board = board;
-		startMoverThread();
+		this.currentPosition = board.getRandomPosition();
+		board.getCell(currentPosition).setGameElement(this);
 	}
-
-	private void startMoverThread() {
-        ObstacleMover mover = new ObstacleMover(this, (LocalBoard) board);
-		System.out.println("MOVING OBJECTS");
-        mover.start();
-    }
 	
 	public int getRemainingMoves() {
 		return remainingMoves;
 	}
 
-	public void decrementMoves(){
+	public void move(BoardPosition newPosition) {
+		Cell currentCell = board.getCell(currentPosition);
+		Cell newCell = board.getCell(newPosition);
+
+		currentCell.setGameElement(null);
+		newCell.setGameElement(this);
+		currentPosition = newPosition;
 		remainingMoves--;
-	}
-
-	public void setCurrentCell(Cell cell){
-		this.currentCell = cell;
-	}
-
-	public Cell getCurrentCell(){
-		return currentCell;
 	}
 
 }

@@ -1,9 +1,7 @@
 package game;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 import environment.LocalBoard;
 import gui.SnakeGui;
@@ -22,7 +20,8 @@ public abstract class Snake extends Thread implements Serializable{
 	protected int size = 5;
 	private int id;
 	protected Board board;
-	         
+	private boolean isIncreasing = false;
+	
 	public Snake(int id,Board board) {
 		this.id = id;
 		this.board=board;
@@ -44,19 +43,27 @@ public abstract class Snake extends Thread implements Serializable{
 		return cells;
 	}
 	
-	protected void move(Cell nextCell) throws InterruptedException {
-		System.out.println("MOVING MOVING MOVING");
-			nextCell.request(this, board);
+	protected void move(Cell cell) throws InterruptedException {
+		// System.out.println("MOVING MOVING MOVING");
+		// System.out.println(cells.size());
+		if (cell.isOcupiedByGoal()) {		
+			// cell.catchGoal();	
+			Goal currentGoal = cell.getGoal();
+			cell.request(this);
+			cells.add(cell);
+
+			cell.removeGoal();
+			currentGoal.incrementValue();
+			board.addGameElement(currentGoal);
+
+		} else {
+			cell.request(this);
 			cells.removeFirst().release();
-			cells.add(nextCell);
-			board.setChanged();	
+			cells.add(cell);
+		}
+		board.setChanged();	
 	}
 	
-	public BoardPosition chooseNextPosition(List<BoardPosition> validNeighboringPositions) {
-        int randomIndex = (int) (Math.random() * validNeighboringPositions.size());
-        return validNeighboringPositions.get(randomIndex);
-    }
-
 	public LinkedList<BoardPosition> getPath() {
 		LinkedList<BoardPosition> coordinates = new LinkedList<BoardPosition>();
 		for (Cell cell : cells) {
@@ -73,28 +80,41 @@ public abstract class Snake extends Thread implements Serializable{
 		BoardPosition at = new BoardPosition(posX, posY);
 		
 		try {
-			board.getCell(at).request(this, board);
+			//Placement of players, if occupied choose a new position
+			if(board.getCell(at).isOcupiedBySnake()) {
+				//System.out.println("Snake in this position, going to choose a new one...");
+				doInitialPositioning();
+			} else {
+				board.getCell(at).request(this);
+				cells.add(board.getCell(at));
+			}
+				
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
-		cells.add(board.getCell(at));
-		System.err.println("Snake " + getIdentification() + " starting at:"+getCells().getLast().toString());		
+		//System.err.println("Snake "+getIdentification()+" starting at:"+getCells().getLast());		
 	}
 	
 	public Board getBoard() {
 		return board;
 	}
 
-	// public void resetDirection() throws InterruptedException {
-	// 	BoardPosition currentHeadPosition = cells.getLast().getPosition();
-	// 	List<BoardPosition> validNeighboringPositions = board.getNeighboringPositions(board.getCell(currentHeadPosition));
+	/*Criar uma metodo
+		Se boolean tiver a true snake aumenta se nao snake anda normal
+	*/
 
-	// 	if (!validNeighboringPositions.isEmpty()) {
-	// 		BoardPosition newDirection = chooseNextPosition(validNeighboringPositions);
-	// 		Cell nextMove = board.getCell(newDirection);
-	// 		move(nextMove);
+	// public void movement(Cell cell, int value) throws InterruptedException{
+	// 	// int value = goal.getValue();
+	// 	if(!isIncreasing){
+	// 		cell.request(this);
+	// 		cells.removeFirst().release();
+	// 		cells.add(cell);
+	// 	}else {
+	// 		for(int i = 0; i < value; i++){
+	// 			cell.request(this);
+	// 			cells.add(cell);
+	// 		}
+	// 		isIncreasing=false;
 	// 	}
 	// }
-
-
 }

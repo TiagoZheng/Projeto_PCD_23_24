@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 
 import environment.Board;
 import environment.LocalBoard;
+import game.Snake;
 /**
  *  Class to create and configure GUI.
  *  Only the listener to the button should be edited, see TODO below.

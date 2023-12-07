@@ -43,7 +43,7 @@ public abstract class Snake extends Thread implements Serializable{
 		return cells;
 	}
 	
-	protected void move(Cell cell) throws InterruptedException {
+	public void move(Cell cell) throws InterruptedException {
 		// System.out.println("MOVING MOVING MOVING");
 		// System.out.println(cells.size());
 		if (cell.isOcupiedByGoal()) {		
@@ -97,6 +97,10 @@ public abstract class Snake extends Thread implements Serializable{
 	
 	public Board getBoard() {
 		return board;
+	}
+
+	public Cell nextCell() {
+		return null;
 	}
 
 	/*Criar uma metodo

@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
 
+import game.AutomaticSnake;
 import game.GameElement;
 import game.Goal;
 import game.Obstacle;
@@ -19,7 +20,7 @@ public abstract class Board extends Observable {
 	public static final long REMOTE_REFRESH_INTERVAL = 200;
 	public static final int NUM_COLUMNS = 30;
 	public static final int NUM_ROWS = 30;
-	protected LinkedList<Snake> snakes = new LinkedList<Snake>();
+	public LinkedList<Snake> snakes = new LinkedList<Snake>();
 	private LinkedList<Obstacle> obstacles= new LinkedList<Obstacle>();
 	protected boolean isFinished;
 	private Goal goal=new Goal(this);
@@ -135,5 +136,6 @@ public abstract class Board extends Observable {
 			s.interrupt();
 		}
 	}
+
 
 }

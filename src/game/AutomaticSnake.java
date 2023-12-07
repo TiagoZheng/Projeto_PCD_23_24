@@ -43,7 +43,7 @@ public class AutomaticSnake extends Snake {
 	}
 	
 	// Where to go next
-	private Cell nextCell(){
+	public Cell nextCell(){
 		LinkedList<BoardPosition> nextMove = chooseDirection();
 		int i = randomValue(nextMove.size());
 

@@ -12,8 +12,9 @@ import game.GameElement;
 import game.Goal;
 import game.Obstacle;
 import game.ObstacleMover;
-import game.Server;
 import game.Snake;
+import remote.GameInfo;
+import remote.Server;
 import game.AutomaticSnake;
 
 /** Class representing the state of a game running locally
@@ -46,6 +47,7 @@ public class LocalBoard extends Board{
 
 		// TODO: launch other threads
 		for(Obstacle o : getObstacles()){
+			o.setRandomPos();
 			obstacleMover = new ObstacleMover(o, this);
 			obstacleMover.start();
 			
@@ -67,7 +69,24 @@ public class LocalBoard extends Board{
 	}
 
 
+	public LinkedList<BoardPosition> getObstaclePos(){
+		LinkedList<BoardPosition> pos = new LinkedList<BoardPosition>();
+		for (int x = 0; x < NUM_COLUMNS; x++) {
+			for (int y = 0; y < NUM_ROWS; y++) {
+				if(cells[x][y].isOcupiedByObstacle()){
+					pos.add(cells[x][y].getPosition());
+				}
+			}
+		}
+		return pos;
+	}
 
+	public int getRemainingMoves(){
+		return obstacles.getLast().getRemainingMoves();
+	}
 
-
+    public GameInfo getGameInfo() {
+		GameInfo gameInfo = new GameInfo(getObstaclePos(), getRemainingMoves());
+        return gameInfo;
+    }
 }

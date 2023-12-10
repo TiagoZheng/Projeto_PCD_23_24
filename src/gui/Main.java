@@ -6,7 +6,7 @@ import java.io.IOException;
 import javax.net.ssl.StandardConstants;
 
 import environment.LocalBoard;
-import game.Server;
+import remote.Server;
 
 public class Main {
 	public static void main(String[] args) {

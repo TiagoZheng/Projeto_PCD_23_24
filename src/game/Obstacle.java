@@ -16,8 +16,7 @@ public class Obstacle extends GameElement {
 	public Obstacle(Board board) {
 		super();
 		this.board = board;
-		this.currentPosition = board.getRandomPosition();
-		board.getCell(currentPosition).setGameElement(this);
+	
 	}
 	
 	public int getRemainingMoves() {
@@ -36,6 +35,19 @@ public class Obstacle extends GameElement {
 	
 	public BoardPosition getInitialPosition(BoardPosition pos){
 		return pos;
+	}
+
+	public BoardPosition getPosition() {
+		return currentPosition;
+	}
+
+	public void setRandomPos() {
+		currentPosition = board.getRandomPosition();
+		board.getCell(currentPosition).setGameElement(this);
+	}
+
+	public void setRemainingMoves(int i){
+		remainingMoves=i;
 	}
 
 }

@@ -5,6 +5,7 @@ import java.util.LinkedList;
 
 import environment.LocalBoard;
 import gui.SnakeGui;
+import remote.RemoteBoard;
 import environment.Board;
 import environment.BoardPosition;
 import environment.Cell;
@@ -21,6 +22,7 @@ public abstract class Snake extends Thread implements Serializable{
 	private int id;
 	protected Board board;
 	private boolean isIncreasing = false;
+
 	
 	public Snake(int id,Board board) {
 		this.id = id;

@@ -100,7 +100,13 @@ public class Cell {
 	public boolean isOcupiedByGoal() {
 		return (gameElement!=null && gameElement instanceof Goal);
 	}
+
+	public boolean isOcupiedByObstacle(){
+		return (gameElement!=null && gameElement instanceof Obstacle);
+	}
 	
-	
+	public void setObstacle(Obstacle o){
+		this.gameElement = o;
+	}
 
 }

@@ -21,6 +21,15 @@ import game.Snake;
  */
 public class RemoteBoard extends Board{
 	
+	public RemoteBoard(GameInfo gameInfo){
+		LinkedList<BoardPosition> bpObs = gameInfo.getObstaclePos();
+		for(BoardPosition bp : bpObs){
+			Obstacle o = new Obstacle(this);
+			cells[bp.x][bp.y].setObstacle(o);
+		}
+		
+	}
+
 	@Override
 	public void handleKeyPress(int keyCode) {
 		//TODO
@@ -33,10 +42,28 @@ public class RemoteBoard extends Board{
 
 	@Override
 	public void init() {
-		// TODO 		
+			
 	}
+    public void update(GameInfo gameInfo) {
+		//TODO
+		for (int x = 0; x < NUM_COLUMNS; x++) {
+			for (int y = 0; y < NUM_ROWS; y++) {
+				cells[x][y].setObstacle(null);;
+			}
+		}
+		
+		for(BoardPosition bp : gameInfo.getObstaclePos()){
+			Obstacle o = new Obstacle(this);
+			o.setRemainingMoves(gameInfo.getRemainingMoves());
+			cells[bp.x][bp.y].setObstacle(o);
+		}
+		setChanged();
+		
+    }
 
-
+	public void addObstacle(BoardPosition bp){
+		cells[bp.x][bp.y].setObstacle(new Obstacle(this));
+	}
 	
 
 }

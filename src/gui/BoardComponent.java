@@ -8,6 +8,7 @@ import game.Goal;
 import game.HumanSnake;
 import game.Obstacle;
 import game.Snake;
+import remote.Direction;
 import game.AutomaticSnake;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -29,6 +30,8 @@ public class BoardComponent extends JComponent implements KeyListener{
 
 	private Board board;
 	private Image obstacleImage;
+
+	private Direction lastPressedDirection;
 
 	public BoardComponent(Board board) {
 		this.board = board;
@@ -120,6 +123,8 @@ public class BoardComponent extends JComponent implements KeyListener{
 				e.getKeyCode()!=KeyEvent.VK_UP && e.getKeyCode()!=KeyEvent.VK_DOWN ) 
 			return; // ignore
 		board.handleKeyPress(e.getKeyCode());
+
+		
 		
 		
 	}
@@ -138,5 +143,5 @@ public class BoardComponent extends JComponent implements KeyListener{
 	public void keyTyped(KeyEvent arg0) {
 		// ignore
 	}
-	
+
 }

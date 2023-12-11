@@ -111,8 +111,9 @@ public class Server {
         }
 
         public void createHumanSnake(){
-            Snake humanSnake = new HumanSnake(board.snakes.size(), board);
-            board.addSnake(humanSnake);  
+            HumanSnake humanSnake = new HumanSnake(board.humanSnakes.size(), board);
+            board.addHumanSnake(humanSnake); 
+            board.addSnake(humanSnake);
             humanSnake.start();
         }
 
@@ -137,7 +138,7 @@ public class Server {
 
         public ServerInputHandler(Socket connection){
             this.connection = connection;
-            // this.id = board.snakes.size();
+            this.id = board.humanSnakes.size() -1;
         }
 
         @Override
@@ -146,34 +147,33 @@ public class Server {
                 in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
                 while (true) {
-
                     if ((clientMessage = in.readLine()) != null) {
                         System.out.println("MESSAGE RECIEVED:" + clientMessage);
-                    }
 
-                    // Direction d = null;
-					// 	switch (clientMessage) {
-					// 	case "UP":
-					// 		d = Direction.UP;
-					// 		break;
-					// 	case "DOWN":
-					// 		d = Direction.DOWN;
-					// 		break;
-					// 	case "LEFT":
-					// 		d = Direction.LEFT;
-					// 		break;
-					// 	case "RIGHT":
-					// 		d = Direction.RIGHT;
-					// 		break;
-					// 	}
-                    
-                    //mover jogardor
+                    Direction d = null;
+						switch (clientMessage) {
+						case "UP":
+							d = Direction.UP;
+							break;
+						case "DOWN":
+							d = Direction.DOWN;
+							break;
+						case "LEFT":
+							d = Direction.LEFT;
+							break;
+						case "RIGHT":
+							d = Direction.RIGHT;
+							break;
+						}
+                        board.moveClient(d, id);
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
                 try {
                     in.close();
+                    connection.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

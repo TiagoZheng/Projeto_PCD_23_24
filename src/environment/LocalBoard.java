@@ -10,9 +10,11 @@ import java.util.concurrent.Executors;
 
 import game.GameElement;
 import game.Goal;
+import game.HumanSnake;
 import game.Obstacle;
 import game.ObstacleMover;
 import game.Snake;
+import remote.Direction;
 import remote.GameInfo;
 import remote.Server;
 import remote.SnakeInfo;
@@ -26,7 +28,7 @@ import game.AutomaticSnake;
 public class LocalBoard extends Board{
 	
 	private static final int NUM_SNAKES = 1;
-	private static final int NUM_OBSTACLES = 20;
+	private static final int NUM_OBSTACLES = 1;
 	public static final int NUM_SIMULTANEOUS_MOVING_OBSTACLES = 1;
 	private ObstacleMover obstacleMover;
 
@@ -118,7 +120,12 @@ public class LocalBoard extends Board{
         return gameInfo;
     }
 
-	///////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////
-	
+	public void moveClient(Direction d, int id) {
+		humanSnakes.get(0).setLastPressedDirection(d);
+	} 
+		
 }
+
+	///////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////
+

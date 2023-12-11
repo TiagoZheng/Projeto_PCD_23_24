@@ -131,6 +131,10 @@ public abstract class Board extends Observable {
 		snakes.add(snake);
 	}
 
+	public void addHumanSnake(HumanSnake snake){
+		humanSnakes.add(snake);
+	}
+
 	public boolean isGameFinished(){
 		if(goal.getValue() > 9){
 			System.out.println("ACABOU");

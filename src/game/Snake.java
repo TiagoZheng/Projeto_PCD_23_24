@@ -5,6 +5,7 @@ import java.util.LinkedList;
 
 import environment.LocalBoard;
 import gui.SnakeGui;
+import remote.Direction;
 import remote.RemoteBoard;
 import environment.Board;
 import environment.BoardPosition;
@@ -22,6 +23,8 @@ public abstract class Snake extends Thread implements Serializable{
 	private int id;
 	protected Board board;
 	private boolean isIncreasing = false;
+	
+	private Direction lastPressedDirection;
 
 	
 	public Snake(int id,Board board) {
@@ -50,22 +53,24 @@ public abstract class Snake extends Thread implements Serializable{
 	public void move(Cell cell) throws InterruptedException {
 		// System.out.println("MOVING MOVING MOVING");
 		// System.out.println(cells.size());
-		if (cell.isOcupiedByGoal()) {		
-			// cell.catchGoal();	
-			Goal currentGoal = cell.getGoal();
-			cell.request(this);
-			cells.add(cell);
+		// if(cell.getPosition().x > 0 && cell.getPosition().x < board.NUM_COLUMNS && cell.getPosition().y > 0 && cell.getPosition().y < board.NUM_ROWS) {
+			if (cell.isOcupiedByGoal()) {		
+				// cell.catchGoal();	
+				Goal currentGoal = cell.getGoal();
+				cell.request(this);
+				cells.add(cell);
 
-			cell.removeGoal();
-			currentGoal.incrementValue();
-			board.addGameElement(currentGoal);
+				cell.removeGoal();
+				currentGoal.incrementValue();
+				board.addGameElement(currentGoal);
 
-		} else {
-			cell.request(this);
-			cells.removeFirst().release();
-			cells.add(cell);
-		}
-		board.setChanged();	
+			} else {
+				cell.request(this);
+				cells.removeFirst().release();
+				cells.add(cell);
+			}
+			board.setChanged();	
+		//}
 	}
 	
 	public LinkedList<BoardPosition> getPath() {
@@ -106,6 +111,12 @@ public abstract class Snake extends Thread implements Serializable{
 	public Cell nextCell() {
 		return null;
 	}
+
+
+	public void setLastPressedDirection(Direction d) {
+		lastPressedDirection = d;
+	}
+
 
 	/*Criar uma metodo
 		Se boolean tiver a true snake aumenta se nao snake anda normal

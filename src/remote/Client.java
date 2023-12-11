@@ -33,8 +33,7 @@ public class Client {
     private PrintWriter out;
 
 	private GameInfo gameInfo;
-	private LocalBoard board;
-	private RemoteBoard remoteBoard;
+	private RemoteBoard board;
 	private SnakeGui gui;
 	private BoardComponent boardGui;
 
@@ -82,12 +81,9 @@ public class Client {
 		public void run(){
 			try {
 				in = new ObjectInputStream(connection.getInputStream());
-
 				gameInfo = (GameInfo) in.readObject();
-
-				remoteBoard = new RemoteBoard(board);
-
-				gui = new SnakeGui(remoteBoard, 600, 0);
+				board = new RemoteBoard(gameInfo);
+				gui = new SnakeGui(board, 600, 0);
 				gui.init();
 
 
@@ -106,7 +102,7 @@ public class Client {
 		private void processConnection() throws ClassNotFoundException, IOException, InterruptedException {
 			while (true) {
 				gameInfo = (GameInfo) in.readObject();
-				remoteBoard.update(gameInfo);
+				board.update(gameInfo);
 			}
 		}
 
@@ -120,6 +116,9 @@ public class Client {
 
 		}
 	}
+
+	///////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////
 
 	public class ClientOutputHandler extends Thread {
 		private Socket connection;
@@ -137,20 +136,15 @@ public class Client {
 				out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(connection.getOutputStream())),true);
 
 				while (true) {
-					
-					// lastPressedDirection = 
-					// No meu talvez no RemoteBoard?
-					/* 
-					lastPressedDirection = boardGui.getLastPressedDirection();
+
+				lastPressedDirection = board.getLastPressedDirection();
 
 					if (lastPressedDirection != null) {
+						//System.out.println("Sending direction: " + lastPressedDirection.toString());
 
-						System.out.println(lastPressedDirection.toString());
-
-						output.println(lastPressedDirection.toString());
-						boardGui.clearLastPressedDirection();
+						out.println(lastPressedDirection.toString());
+						board.clearLastPressedDirection();
 					}
-					*/
 				}
 
 			} catch (IOException e) {

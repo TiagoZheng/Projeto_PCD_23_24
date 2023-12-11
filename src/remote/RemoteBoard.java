@@ -15,6 +15,7 @@ import game.Goal;
 import game.HumanSnake;
 import game.Obstacle;
 import game.Snake;
+import java.awt.event.KeyEvent;
 
 /** Remote representation of the game, no local threads involved.
  * Game state will be changed when updated info is received from Srver.
@@ -24,13 +25,7 @@ import game.Snake;
  */
 public class RemoteBoard extends Board{
 
-	private int up, down, left, right;
-	private Direction lastPressedDirection=null;
-	private Board board;
-
-	public RemoteBoard(Board board){
-		this.board = board;
-	}
+	Direction lastPressedDirection = null;
 
 	public RemoteBoard(GameInfo gameInfo) throws InterruptedException{
 		//Obstacles
@@ -47,12 +42,13 @@ public class RemoteBoard extends Board{
 		//Snakes
 		for(SnakeInfo snakeInfo : gameInfo.getSnakeInfoGameInfo()){
 			if(snakeInfo.isHumanSnake()){
+
 				Snake humanSnake = new HumanSnake(snakeInfo.getIdSnakeInfo(), this);
 
 				for(BoardPosition snakeBP : snakeInfo.getSnakePosSnakeInfo()){
 					//this.getCell(snakeBP).request(humanSnake);
 					cells[snakeBP.x][snakeBP.y].setSnake(humanSnake);
-					// humanSnake.cells.add(getCell(snakeBP));
+					humanSnake.cells.add(getCell(snakeBP));
 				}		
 
 			} else {
@@ -60,7 +56,7 @@ public class RemoteBoard extends Board{
 				for(BoardPosition snakeBP : snakeInfo.getSnakePosSnakeInfo()){
 					// this.getCell(snakeBP).request(autoSnake);
 					cells[snakeBP.x][snakeBP.y].setSnake(autoSnake);
-					// autoSnake.cells.add(getCell(snakeBP));
+					autoSnake.cells.add(getCell(snakeBP));
 				}
 			}
 		
@@ -69,18 +65,24 @@ public class RemoteBoard extends Board{
 
 	@Override
 	public void handleKeyPress(int keyCode) {
-		// if(keyCode == left) {
-		// 	lastPressedDirection=environment.Direction.LEFT;
-		// }
-		// else if(keyCode == right) {
-		// 	lastPressedDirection=environment.Direction.RIGHT;
-		// }
-		// else if(keyCode == up) {
-		// 	lastPressedDirection=environment.Direction.UP;
-		// }
-		// else if(keyCode == down) {
-		// 	lastPressedDirection=environment.Direction.DOWN;
-		// }
+		if (keyCode == KeyEvent.VK_LEFT) {
+            lastPressedDirection = Direction.LEFT;
+        } else if (keyCode == KeyEvent.VK_RIGHT) {
+            lastPressedDirection = Direction.RIGHT;
+        } else if (keyCode == KeyEvent.VK_UP) {
+            lastPressedDirection = Direction.UP;
+        } else if (keyCode == KeyEvent.VK_DOWN) {
+            lastPressedDirection = Direction.DOWN;
+        }
+		System.out.println(lastPressedDirection);
+	}
+
+	public Direction getLastPressedDirection() {
+		return lastPressedDirection;
+	}
+	
+	public void clearLastPressedDirection() {
+		lastPressedDirection=null;
 	}
 
 	@Override
@@ -100,7 +102,6 @@ public class RemoteBoard extends Board{
 				cells[x][y].setObstacle(null);;
 			}
 		}
-		
 		// Update on obstacle position 
 		for(BoardPosition bp : gameInfo.getObstaclePosGameInfo()){
 			Obstacle o = new Obstacle(this);
@@ -115,27 +116,22 @@ public class RemoteBoard extends Board{
 		cells[goalBP.x][goalBP.y].setGoal(g);
 
 		//Update on Snake position
-		for(SnakeInfo snakeInfo : gameInfo.getSnakeInfoGameInfo()){
-			
+		for(SnakeInfo snakeInfo : gameInfo.getSnakeInfoGameInfo()){			
 			if(snakeInfo.isHumanSnake()){
 				Snake humanSnake = new HumanSnake(snakeInfo.getIdSnakeInfo(), this);
 				for(BoardPosition snakeBP : snakeInfo.getSnakePosSnakeInfo()){
-					//this.getCell(snakeBP).request(humanSnake);
 					cells[snakeBP.x][snakeBP.y].setSnake(humanSnake);
-					System.out.println("Moving");
 					// humanSnake.cells.add(getCell(snakeBP));
-					
-					// cells[humanSnake.cells.getFirst().getPosition().x][humanSnake.cells.getFirst().getPosition().y].setSnake(null);
+					// System.out.println("SIZE " + humanSnake.cells.size());
+					setChanged();
 				}
 
 			} else {
 				Snake autoSnake = new AutomaticSnake(snakeInfo.getIdSnakeInfo(), this);
 				for(BoardPosition snakeBP : snakeInfo.getSnakePosSnakeInfo()){
-					// this.getCell(snakeBP).request(autoSnake);
 					cells[snakeBP.x][snakeBP.y].setSnake(autoSnake);
 					// autoSnake.cells.add(getCell(snakeBP));
-
-					// cells[autoSnake.cells.getFirst().getPosition().x][autoSnake.cells.getFirst().getPosition().y].setSnake(null);
+					setChanged();
 				}
 			}
 		}

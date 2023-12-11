@@ -35,16 +35,25 @@ public class BoardPosition implements Serializable{
 		return Math.sqrt(delta_x * delta_x + delta_y * delta_y);
 	}
 
+
 	public BoardPosition getCellAbove() {
-		return new BoardPosition(x, y-1);
+		if(y>0)
+			return new BoardPosition(x, y-1);
+		return null;
 	}
 	public BoardPosition getCellBelow() {
-		return new BoardPosition(x, y+1);
+		if(y<Board.NUM_ROWS-1)
+			return new BoardPosition(x, y+1);
+		return null;
 	}
 	public BoardPosition getCellLeft() {
-		return new BoardPosition(x-1, y);
+		if(x>0)
+			return new BoardPosition(x-1, y);
+		return null;
 	}
 	public BoardPosition getCellRight() {
-		return new BoardPosition(x+1, y);
+		if(x<Board.NUM_COLUMNS-1)
+			return new BoardPosition(x+1, y);
+		return null;
 	}
 }

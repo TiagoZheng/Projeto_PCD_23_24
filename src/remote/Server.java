@@ -65,8 +65,8 @@ public class Server {
 
 //////////////////////////////////////////////////
 //////////////////////////////////////////////////
-//////////////////////////////////////////////////
 
+    // This class sends out the game state to the client and creates new snakes for each client that joins
 	public class ServerOutputHandler extends Thread{
 
         private Socket connection;
@@ -98,7 +98,6 @@ public class Server {
             
             while (true) {
                 gameState = board.getGameInfo();
-                // serverMessage = new ServerMessage(gameState); 
                 out.writeObject(gameState);
                 out.reset();
 
@@ -119,7 +118,6 @@ public class Server {
 
         private void closeConnection() {
             try {
-                // in.close();
                 out.close();
                 connection.close();
             } catch (IOException e) {
@@ -129,6 +127,7 @@ public class Server {
         }
     }
 
+    // This class recieves the directions from the client and then puts the human snake moving
     public class ServerInputHandler extends Thread {
 
         private Socket connection;

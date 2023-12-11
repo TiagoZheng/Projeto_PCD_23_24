@@ -23,8 +23,9 @@ public class HumanSnake extends Snake {
   @Override
   public void run() {
       doInitialPositioning();
-
-     while (!board.isGameFinished()) {
+    
+      // While game is not finished, when getting the direction moves
+      while (!board.isGameFinished()) {
         System.out.println("ANTES LAST DIRECTION: " + lastPressedDirection);
         if(lastPressedDirection != null){
           Cell nextMove;

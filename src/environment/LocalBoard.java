@@ -73,6 +73,7 @@ public class LocalBoard extends Board{
 		// do nothing... No keys relevant in local game
 	}
 
+	//---------FOR GAME INFO (REMOTE GAME) ----------
 
 	public LinkedList<BoardPosition> getObstaclePos(){
 		LinkedList<BoardPosition> pos = new LinkedList<BoardPosition>();
@@ -98,6 +99,7 @@ public class LocalBoard extends Board{
 		return goal.getValue();
 	}
 
+	
 	public LinkedList<SnakeInfo> getSnakeInfos(){
 		snakeInfos.clear();
 		LinkedList<BoardPosition> snakePos = new LinkedList<>(); 
@@ -125,6 +127,4 @@ public class LocalBoard extends Board{
 		
 }
 
-	///////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////
 

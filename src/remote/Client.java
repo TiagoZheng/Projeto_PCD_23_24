@@ -39,8 +39,6 @@ public class Client {
 
 	LinkedList<BoardPosition> bp = new LinkedList<>();
 
-	
-
 	private int port;
 
 	public Client(String hostName, int port) {
@@ -49,7 +47,6 @@ public class Client {
 	}
 
 	public static void main(String[] args) {
-	// TODO
 		Client app = new Client("localhost", 8080);
 		app.runClient();
 	}
@@ -70,6 +67,7 @@ public class Client {
 	//////////////////////////////////////////////
 	//////////////////////////////////////////////
 
+	// Class that deals with what it gets from the server, in this case the game state and shows it to the client
 	public class ClientInputHandler extends Thread{
     	private Socket connection;
 
@@ -81,14 +79,13 @@ public class Client {
 		public void run(){
 			try {
 				in = new ObjectInputStream(connection.getInputStream());
+
 				gameInfo = (GameInfo) in.readObject();
 				board = new RemoteBoard(gameInfo);
 				gui = new SnakeGui(board, 600, 0);
 				gui.init();
 
-
 				new ClientOutputHandler(socket, boardGui).start();
-
 				processConnection();
 
 			} catch (IOException | ClassNotFoundException | InterruptedException e) {
@@ -98,7 +95,7 @@ public class Client {
 			}
 
 		}
-
+		// After conneting to server updates from what the server provides
 		private void processConnection() throws ClassNotFoundException, IOException, InterruptedException {
 			while (true) {
 				gameInfo = (GameInfo) in.readObject();
@@ -120,6 +117,7 @@ public class Client {
 	///////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////
 
+	// This Class sends out information to the server, sends out the direction that clients input
 	public class ClientOutputHandler extends Thread {
 		private Socket connection;
 		private BoardComponent boardGui;
@@ -134,11 +132,9 @@ public class Client {
 		public void run() {
 			try {
 				out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(connection.getOutputStream())),true);
-
 				while (true) {
 
 				lastPressedDirection = board.getLastPressedDirection();
-
 					if (lastPressedDirection != null) {
 						//System.out.println("Sending direction: " + lastPressedDirection.toString());
 

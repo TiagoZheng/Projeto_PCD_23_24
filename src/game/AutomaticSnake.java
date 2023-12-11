@@ -28,8 +28,6 @@ public class AutomaticSnake extends Snake {
     @Override
 	public void run() {
 		doInitialPositioning();
-		//System.err.println("initial size:"+cells.size());
-		//cells.getLast().request(this); //Put in boardcell
 
 		// Automatic movement
 		while (!Thread.interrupted()) {
@@ -38,7 +36,6 @@ public class AutomaticSnake extends Snake {
 					System.out.println("Game End!");
 					break;
 				}	
-				// System.out.println("FINITO? " + board.isGameFinished());
 				move(nextCell());
 				Thread.sleep(Board.PLAYER_PLAY_INTERVAL);
 
@@ -57,27 +54,30 @@ public class AutomaticSnake extends Snake {
 		return board.getCell(nextMove.get(i));
 	}
 	
+	// Calculates the distance to goal
 	private int distanceToGoal(BoardPosition position1, BoardPosition position2){
 		return Math.abs(position1.x - position2.x) + Math.abs(position1.y - position2.y);
 	}
 
+	// Puts every possible in a List of BoardPosition that the snake can go
 	private LinkedList<BoardPosition> chooseDirection(){
 		BoardPosition goalPosition = board.getGoalPosition();
 		BoardPosition headPosition = cells.getLast().getPosition();
 		List<BoardPosition> validNeighboringPositions = board.getNeighboringPositions(board.getCell(headPosition));
-		// System.out.println("VALID: " + validNeighboringPositions);
+// System.out.println("VALID: " + validNeighboringPositions);
 		LinkedList<BoardPosition> nextGoodMove = new LinkedList<BoardPosition>();
 
+		// Removes from the List the positions that he is occupying
 		if (this.getLength() > 1){
 			LinkedList<BoardPosition> ListBP = cellToBoardPosition(this.cells);
-			// System.out.println("PREV: " + bp);
+// System.out.println("PREV: " + bp);
 			for(BoardPosition bp : ListBP)
 				validNeighboringPositions.remove(bp);
-			// System.out.println("NEW_VALID: " + validNeighboringPositions);
+// System.out.println("NEW_VALID: " + validNeighboringPositions);
 		}
 
 		int distance = distanceToGoal(headPosition, goalPosition);
-
+			
 		for(BoardPosition neighbor : validNeighboringPositions) {
 			// System.out.println("NEIGHBOR: " + neighbor);
 			int newDistance = distanceToGoal(goalPosition, neighbor);

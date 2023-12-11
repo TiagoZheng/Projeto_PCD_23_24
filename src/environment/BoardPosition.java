@@ -39,21 +39,21 @@ public class BoardPosition implements Serializable{
 	public BoardPosition getCellAbove() {
 		if(y>0)
 			return new BoardPosition(x, y-1);
-		return null;
+		return new BoardPosition(x, y);
 	}
 	public BoardPosition getCellBelow() {
 		if(y<Board.NUM_ROWS-1)
 			return new BoardPosition(x, y+1);
-		return null;
+		return new BoardPosition(x, y);
 	}
 	public BoardPosition getCellLeft() {
 		if(x>0)
 			return new BoardPosition(x-1, y);
-		return null;
+		return new BoardPosition(x, y);
 	}
 	public BoardPosition getCellRight() {
 		if(x<Board.NUM_COLUMNS-1)
 			return new BoardPosition(x+1, y);
-		return null;
+		return new BoardPosition(x, y);
 	}
 }

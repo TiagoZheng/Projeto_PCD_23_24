@@ -46,17 +46,15 @@ public class RemoteBoard extends Board{
 				Snake humanSnake = new HumanSnake(snakeInfo.getIdSnakeInfo(), this);
 
 				for(BoardPosition snakeBP : snakeInfo.getSnakePosSnakeInfo()){
-					//this.getCell(snakeBP).request(humanSnake);
 					cells[snakeBP.x][snakeBP.y].setSnake(humanSnake);
 					humanSnake.cells.add(getCell(snakeBP));
 				}		
 
 			} else {
-				Snake autoSnake = new AutomaticSnake(snakeInfo.getIdSnakeInfo(), this);	
+				Snake autoSnake =  new AutomaticSnake(snakeInfo.getIdSnakeInfo(), this);	
 				for(BoardPosition snakeBP : snakeInfo.getSnakePosSnakeInfo()){
-					// this.getCell(snakeBP).request(autoSnake);
 					cells[snakeBP.x][snakeBP.y].setSnake(autoSnake);
-					autoSnake.cells.add(getCell(snakeBP));
+					//autoSnake.cells.add(getCell(snakeBP));
 				}
 			}
 		
@@ -96,7 +94,7 @@ public class RemoteBoard extends Board{
 
     public void update(GameInfo gameInfo) throws InterruptedException {
 		// Update client GUI
-		// Criar grid no remote
+		// Criar grid no remote	
 		for (int x = 0; x < NUM_COLUMNS; x++) {
 			for (int y = 0; y < NUM_ROWS; y++) {
 				cells[x][y].setObstacle(null);;
@@ -119,8 +117,12 @@ public class RemoteBoard extends Board{
 		for(SnakeInfo snakeInfo : gameInfo.getSnakeInfoGameInfo()){			
 			if(snakeInfo.isHumanSnake()){
 				Snake humanSnake = new HumanSnake(snakeInfo.getIdSnakeInfo(), this);
-				for(BoardPosition snakeBP : snakeInfo.getSnakePosSnakeInfo()){
-					cells[snakeBP.x][snakeBP.y].setSnake(humanSnake);
+				System.out.println("snake size: " + snakeInfo.getSnakePosSnakeInfo().size());
+				for(BoardPosition snakeBP : snakeInfo.getSnakePosSnakeInfo())
+				{
+
+					//cells[snakeBP.x][snakeBP.y].setSnake(humanSnake);
+					
 					// humanSnake.cells.add(getCell(snakeBP));
 					// System.out.println("SIZE " + humanSnake.cells.size());
 					setChanged();

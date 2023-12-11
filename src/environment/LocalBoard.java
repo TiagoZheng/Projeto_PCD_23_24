@@ -100,7 +100,6 @@ public class LocalBoard extends Board{
 
 	public LinkedList<SnakeInfo> getSnakeInfos(){
 		snakeInfos.clear();
-
 		LinkedList<BoardPosition> snakePos = new LinkedList<>(); 
 		for(Snake s : snakes){
 

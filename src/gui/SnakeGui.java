@@ -6,6 +6,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -13,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 
 import environment.Board;
+import environment.BoardPosition;
 import environment.LocalBoard;
 import game.Snake;
 /**
@@ -51,9 +55,23 @@ public class SnakeGui implements Observer {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO
+				for (Snake s : board.getSnakes()) {
+					s.getCells().getLast();
+					List<BoardPosition> validPos = board.getNeighboringPositions(s.getCells().getLast());
+
+					for(BoardPosition validBP : validPos){
+						if(!board.getCell(validBP).isOcupied()){
+							
+							try {
+								s.move(board.getCell(validBP));
+								break;
+							} catch (InterruptedException e1) {
+								e1.printStackTrace();
+							}
+						}
+				}
 			}
-				
+		}
 		});
 		frame.add(resetObstaclesButton,BorderLayout.SOUTH);
 		

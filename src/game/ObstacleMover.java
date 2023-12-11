@@ -35,13 +35,20 @@ public class ObstacleMover extends Thread {
 	}
 
 	public void moveObstacle(){
+
+		BoardPosition bp = board.getRandomPosition();
+		while(board.getCell(bp).isOcupiedByGoal() || board.getCell(bp).isOcupied() ){
+			bp = board.getRandomPosition();
+		}
+		
 		try {
-			BoardPosition bp = board.getRandomPosition();
 			obstacle.move(bp);
-			Thread.sleep(Obstacle.OBSTACLE_MOVE_INTERVAL);
-			
+			Thread.sleep(obstacle.OBSTACLE_MOVE_INTERVAL);
 		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+	
+
 }

@@ -123,10 +123,6 @@ public class BoardComponent extends JComponent implements KeyListener{
 				e.getKeyCode()!=KeyEvent.VK_UP && e.getKeyCode()!=KeyEvent.VK_DOWN ) 
 			return; // ignore
 		board.handleKeyPress(e.getKeyCode());
-
-		
-		
-		
 	}
 
 	@Override

@@ -35,7 +35,6 @@ public class Cell {
 	}
 
 	public synchronized void request(Snake snake) throws InterruptedException {
-		//TODO coordination and mutual exclusion
 		while(isOcupied()) {
 			System.out.println("There is something, i`ll wait...");
 			wait();

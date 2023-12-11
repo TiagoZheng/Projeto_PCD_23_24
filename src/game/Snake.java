@@ -1,7 +1,9 @@
 package game;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import environment.LocalBoard;
 import gui.SnakeGui;
@@ -57,8 +59,7 @@ public abstract class Snake extends Thread implements Serializable{
 			if (cell.isOcupiedByGoal()) {		
 				// cell.catchGoal();	
 				Goal currentGoal = cell.getGoal();
-				cell.request(this);
-				cells.add(cell);
+				increasement(cell, currentGoal.getValue());
 
 				cell.removeGoal();
 				currentGoal.incrementValue();
@@ -118,6 +119,23 @@ public abstract class Snake extends Thread implements Serializable{
 	}
 
 
+	public void increasement(Cell cell, int value) throws InterruptedException {
+        for(int i = 0; i < value; i++){
+                cell.request(this);
+                cells.add(cell);
+
+                if(value > 1){
+                    List<BoardPosition> possibleCells = new ArrayList<BoardPosition>();
+                    possibleCells = board.getNeighboringPositions(cell);
+                        for(BoardPosition bp : possibleCells){
+                            Cell cell_temporary = new Cell (bp);
+                                if(!cell_temporary.isOcupied()){
+                                    cell = cell_temporary;
+                                }
+                        } 
+                }
+         }
+    }
 	/*Criar uma metodo
 		Se boolean tiver a true snake aumenta se nao snake anda normal
 	*/

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.util.LinkedList;
+import java.util.function.UnaryOperator;
 
 import environment.LocalBoard;
 import environment.Board;
@@ -22,37 +23,64 @@ import game.Snake;
  *
  */
 public class RemoteBoard extends Board{
-	
+
+	private int up, down, left, right;
+	private Direction lastPressedDirection=null;
+	private Board board;
+
+	public RemoteBoard(Board board){
+		this.board = board;
+	}
+
 	public RemoteBoard(GameInfo gameInfo) throws InterruptedException{
 		//Obstacles
 		for(BoardPosition bp : gameInfo.getObstaclePosGameInfo()){
 			Obstacle o = new Obstacle(this);
 			cells[bp.x][bp.y].setObstacle(o);
 		}
-		System.out.println("OBSTACLE PLACE CHECK!");
 
 		//Goal
 		BoardPosition goalBP = gameInfo.getGoalPosGameInfo();
 		Goal g = new Goal(this);
 		cells[goalBP.x][goalBP.y].setGoal(g);
-		System.out.println("GOAL PLACE CHECK!");
 
 		//Snakes
-		// for(SnakeInfo snakeInfo : gameInfo.getSnakeInfoGameInfo()){
-		// 	if(snakeInfo.isHumanSnake()){
-		// 		Snake humanSnake = new HumanSnake(snakeInfo.getIdSnakeInfo(), this);
-		// 		cells[snakeInfo.getSnakePosSnakeInfo().x][snakeInfo.getSnakePosSnakeInfo().y].request(humanSnake);
-		// 	} else {
-		// 		Snake autoSnake = new AutomaticSnake(snakeInfo.getIdSnakeInfo(), this);
-		// 		cells[snakeInfo.getSnakePosSnakeInfo().x][snakeInfo.getSnakePosSnakeInfo().y].request(autoSnake);
-		// 	}
-		// }
-		// System.out.println("SNAKES PLACE CHECK!");
+		for(SnakeInfo snakeInfo : gameInfo.getSnakeInfoGameInfo()){
+			if(snakeInfo.isHumanSnake()){
+				Snake humanSnake = new HumanSnake(snakeInfo.getIdSnakeInfo(), this);
+
+				for(BoardPosition snakeBP : snakeInfo.getSnakePosSnakeInfo()){
+					//this.getCell(snakeBP).request(humanSnake);
+					cells[snakeBP.x][snakeBP.y].setSnake(humanSnake);
+					// humanSnake.cells.add(getCell(snakeBP));
+				}		
+
+			} else {
+				Snake autoSnake = new AutomaticSnake(snakeInfo.getIdSnakeInfo(), this);	
+				for(BoardPosition snakeBP : snakeInfo.getSnakePosSnakeInfo()){
+					// this.getCell(snakeBP).request(autoSnake);
+					cells[snakeBP.x][snakeBP.y].setSnake(autoSnake);
+					// autoSnake.cells.add(getCell(snakeBP));
+				}
+			}
+		
+		}
 	}
 
 	@Override
 	public void handleKeyPress(int keyCode) {
-		//TODO
+		// if(keyCode == left) {
+		// 	lastPressedDirection=environment.Direction.LEFT;
+		// }
+		// else if(keyCode == right) {
+		// 	lastPressedDirection=environment.Direction.RIGHT;
+		// }
+		// else if(keyCode == up) {
+		// 	lastPressedDirection=environment.Direction.UP;
+		// }
+		// else if(keyCode == down) {
+		// 	lastPressedDirection=environment.Direction.DOWN;
+		// }
 	}
 
 	@Override
@@ -61,9 +89,9 @@ public class RemoteBoard extends Board{
 	}
 
 	@Override
-	public void init() {
-			
+	public void init() {	
 	}
+
     public void update(GameInfo gameInfo) throws InterruptedException {
 		// Update client GUI
 		// Criar grid no remote
@@ -78,7 +106,6 @@ public class RemoteBoard extends Board{
 			Obstacle o = new Obstacle(this);
 			o.setRemainingMoves(gameInfo.getRemainingMovesGameInfo());
 			cells[bp.x][bp.y].setObstacle(o);
-			System.out.println("OBSTACLE UPDATE CHECK!");
 		}
 
 		// Update on goals position 
@@ -86,23 +113,32 @@ public class RemoteBoard extends Board{
 		Goal g = new Goal(this);
 		g.setValue(gameInfo.getGoalValueGameInfo());
 		cells[goalBP.x][goalBP.y].setGoal(g);
-		System.out.println("GOAL UPDATE CHECK!");
 
 		//Update on Snake position
-		// for(SnakeInfo snakeInfo : gameInfo.getSnakeInfoGameInfo()){
-		// 	if(snakeInfo.isHumanSnake()){
-		// 		Snake humanSnake = new HumanSnake(snakeInfo.getIdSnakeInfo(), this);
-		// 		humanSnake.move(getCell(new BoardPosition(snakeInfo.getSnakePosSnakeInfo().x, snakeInfo.getSnakePosSnakeInfo().y)));
-		// 		// cells[snakeInfo.getSnakePosSnakeInfo().x][snakeInfo.getSnakePosSnakeInfo().y].request(humanSnake);
+		for(SnakeInfo snakeInfo : gameInfo.getSnakeInfoGameInfo()){
+			
+			if(snakeInfo.isHumanSnake()){
+				Snake humanSnake = new HumanSnake(snakeInfo.getIdSnakeInfo(), this);
+				for(BoardPosition snakeBP : snakeInfo.getSnakePosSnakeInfo()){
+					//this.getCell(snakeBP).request(humanSnake);
+					cells[snakeBP.x][snakeBP.y].setSnake(humanSnake);
+					System.out.println("Moving");
+					// humanSnake.cells.add(getCell(snakeBP));
+					
+					// cells[humanSnake.cells.getFirst().getPosition().x][humanSnake.cells.getFirst().getPosition().y].setSnake(null);
+				}
 
-		// 	} else {
-		// 		Snake autoSnake = new AutomaticSnake(snakeInfo.getIdSnakeInfo(), this);
-		// 		autoSnake.move(getCell(new BoardPosition(snakeInfo.getSnakePosSnakeInfo().x, snakeInfo.getSnakePosSnakeInfo().y)));
-		// 		// cells[snakeInfo.getSnakePosSnakeInfo().x][snakeInfo.getSnakePosSnakeInfo().y].request(autoSnake);
-	
-		// 	}
-		// }
-		// System.out.println("SNAKES UPDATE CHECK!");
+			} else {
+				Snake autoSnake = new AutomaticSnake(snakeInfo.getIdSnakeInfo(), this);
+				for(BoardPosition snakeBP : snakeInfo.getSnakePosSnakeInfo()){
+					// this.getCell(snakeBP).request(autoSnake);
+					cells[snakeBP.x][snakeBP.y].setSnake(autoSnake);
+					// autoSnake.cells.add(getCell(snakeBP));
+
+					// cells[autoSnake.cells.getFirst().getPosition().x][autoSnake.cells.getFirst().getPosition().y].setSnake(null);
+				}
+			}
+		}
 		setChanged();
 		
     }

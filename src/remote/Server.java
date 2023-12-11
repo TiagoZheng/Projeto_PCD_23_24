@@ -80,6 +80,7 @@ public class Server {
         public void run(){
             try {
                 createHumanSnake();  
+
                 new ServerInputHandler(connection).start();
                 out = new ObjectOutputStream(connection.getOutputStream());
                 
@@ -99,8 +100,8 @@ public class Server {
                 gameState = board.getGameInfo();
                 // serverMessage = new ServerMessage(gameState); 
                 out.writeObject(gameState);
-                // out.reset();
-                
+                out.reset();
+
                 try {
                     Thread.sleep(Board.REMOTE_REFRESH_INTERVAL);
                 } catch (InterruptedException e) {
@@ -110,7 +111,7 @@ public class Server {
         }
 
         public void createHumanSnake(){
-            Snake humanSnake = new HumanSnake(board.snakes.size()+1, board);
+            Snake humanSnake = new HumanSnake(board.snakes.size(), board);
             board.addSnake(humanSnake);  
             humanSnake.start();
         }

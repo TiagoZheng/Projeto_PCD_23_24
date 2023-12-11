@@ -15,6 +15,7 @@ import java.util.LinkedList;
 
 import environment.Board;
 import environment.BoardPosition;
+import environment.LocalBoard;
 import gui.BoardComponent;
 import gui.SnakeGui;
 
@@ -32,11 +33,14 @@ public class Client {
     private PrintWriter out;
 
 	private GameInfo gameInfo;
-	private RemoteBoard board;
+	private LocalBoard board;
+	private RemoteBoard remoteBoard;
 	private SnakeGui gui;
 	private BoardComponent boardGui;
 
 	LinkedList<BoardPosition> bp = new LinkedList<>();
+
+	
 
 	private int port;
 
@@ -80,11 +84,12 @@ public class Client {
 				in = new ObjectInputStream(connection.getInputStream());
 
 				gameInfo = (GameInfo) in.readObject();
-				board = new RemoteBoard(gameInfo);
 
-				gui = new SnakeGui(board, 600, 0);
+				remoteBoard = new RemoteBoard(board);
+
+				gui = new SnakeGui(remoteBoard, 600, 0);
 				gui.init();
-				// boardGui = gui.getBoard(); // Acho que nao uso para baixo?
+
 
 				new ClientOutputHandler(socket, boardGui).start();
 
@@ -101,9 +106,7 @@ public class Client {
 		private void processConnection() throws ClassNotFoundException, IOException, InterruptedException {
 			while (true) {
 				gameInfo = (GameInfo) in.readObject();
-				// serverMessage = (GameInfo) in.readObject();
-				// gameState = serverMessage;
-				board.update(gameInfo);
+				remoteBoard.update(gameInfo);
 			}
 		}
 
@@ -120,8 +123,8 @@ public class Client {
 
 	public class ClientOutputHandler extends Thread {
 		private Socket connection;
-		private BoardComponent boardGui; // Mudar para remote board?
-		// private Direction lastPressedDirection;
+		private BoardComponent boardGui;
+		private Direction lastPressedDirection;
 
 		public ClientOutputHandler(Socket connection, BoardComponent boardGui) {
 			this.connection = connection;
@@ -134,6 +137,8 @@ public class Client {
 				out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(connection.getOutputStream())),true);
 
 				while (true) {
+					
+					// lastPressedDirection = 
 					// No meu talvez no RemoteBoard?
 					/* 
 					lastPressedDirection = boardGui.getLastPressedDirection();

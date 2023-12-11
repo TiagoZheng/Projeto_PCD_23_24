@@ -1,17 +1,20 @@
 package remote;
 
 import java.io.Serializable;
+import java.util.LinkedList;
 
+import environment.Board;
 import environment.BoardPosition;
+import environment.Cell;
 
 public class SnakeInfo implements Serializable {
     private int id;
-    private BoardPosition snakePos;
+    private LinkedList<BoardPosition> cells;
     private boolean humanSnake;
 
-    public SnakeInfo(int id, BoardPosition snakePos, boolean humanSnake){
+    public SnakeInfo(int id, LinkedList<BoardPosition> cells , boolean humanSnake){
         this.id = id;
-        this.snakePos = snakePos;
+        this.cells = cells;
         this.humanSnake = humanSnake;
     }
     
@@ -19,8 +22,8 @@ public class SnakeInfo implements Serializable {
         return id;
     }
 
-    public BoardPosition getSnakePosSnakeInfo(){
-        return snakePos;
+    public LinkedList<BoardPosition> getSnakePosSnakeInfo(){
+        return cells;
     }
 
     public boolean isHumanSnake(){

@@ -114,4 +114,8 @@ public class Cell {
 		this.gameElement = g;
     }
 
+	public void setSnake(Snake s){
+		this.ocuppyingSnake =s;
+	}
+
 }

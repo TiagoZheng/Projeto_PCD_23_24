@@ -98,22 +98,27 @@ public class LocalBoard extends Board{
 
 	public LinkedList<SnakeInfo> getSnakeInfos(){
 		snakeInfos.clear();
-		for (int x = 0; x < NUM_COLUMNS; x++) {
-			for (int y = 0; y < NUM_ROWS; y++) {
-				if(cells[x][y].isOcupiedBySnake()){
-					Snake s = cells[x][y].getOcuppyingSnake();
-					int id = s.getIdentification();
-					BoardPosition bp = new BoardPosition(x,y);
-					snakeInfos.add(new SnakeInfo(id, bp, s.isHumanPlayer()));
-				}
+
+		LinkedList<BoardPosition> snakePos = new LinkedList<>(); 
+		for(Snake s : snakes){
+
+			LinkedList<Cell> snakeCells = s.getCells();
+			for(Cell c : snakeCells){
+				snakePos.add(c.getPosition());
 			}
+
+			snakeInfos.add(new SnakeInfo(s.getIdentification(), snakePos, s.isHumanPlayer()));
 		}
-		return snakeInfos;
-		
+			return snakeInfos;
+			
 	}
 
     public GameInfo getGameInfo() {
 		GameInfo gameInfo = new GameInfo(getObstaclePos(), getRemainingMoves(),getGoalValue(), getGoalPos(), getSnakeInfos());
         return gameInfo;
     }
+
+	///////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////
+	
 }

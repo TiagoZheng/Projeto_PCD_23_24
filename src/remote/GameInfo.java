@@ -11,26 +11,37 @@ import game.Snake;
 
 public class GameInfo implements Serializable{
 
-    private int id;
+    private int remainingMoves, goalValue;
+    private BoardPosition goalPos;
     LinkedList<BoardPosition> obstaclePos = new LinkedList<>();
-    int remainingMoves;
+    LinkedList<SnakeInfo> snakeInfo = new LinkedList<>();
 
-    public GameInfo(LinkedList<BoardPosition> obstaclePos, int remainingMoves){
+    public GameInfo(LinkedList<BoardPosition> obstaclePos, int remainingMoves, int goalValue, BoardPosition goalPos, LinkedList<SnakeInfo> snakeInfo){
         this.obstaclePos = obstaclePos;
         this.remainingMoves = remainingMoves;
+        this.goalValue = goalValue;
+        this.goalPos = goalPos;
+        this.snakeInfo = snakeInfo;
     }
 
-    public int getId(){
-        return id;
-    }
-
-    public LinkedList<BoardPosition> getObstaclePos(){
+    public LinkedList<BoardPosition> getObstaclePosGameInfo(){
         return obstaclePos;
     }
 
-    public int getRemainingMoves(){
+    public int getRemainingMovesGameInfo(){
         return remainingMoves;
     } 
 
+    public BoardPosition getGoalPosGameInfo(){
+        return goalPos;
+    }
+
+    public int getGoalValueGameInfo(){
+        return goalValue;
+    }
+
+    public LinkedList<SnakeInfo> getSnakeInfoGameInfo(){
+        return snakeInfo;
+    }
 
 }

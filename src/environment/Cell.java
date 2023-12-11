@@ -109,4 +109,9 @@ public class Cell {
 		this.gameElement = o;
 	}
 
+
+    public void setGoal(Goal g) {
+		this.gameElement = g;
+    }
+
 }

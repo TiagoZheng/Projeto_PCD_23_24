@@ -22,4 +22,10 @@ public class HumanSnake extends Snake {
       doInitialPositioning();
   }
 
+
+  @Override
+  public boolean isHumanPlayer() {
+    return true;
+  }
+
 }

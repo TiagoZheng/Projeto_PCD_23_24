@@ -28,6 +28,8 @@ public abstract class Snake extends Thread implements Serializable{
 		this.id = id;
 		this.board=board;
 	}
+	
+	public abstract boolean isHumanPlayer();
 
 	public int getSize() {
 		return size;

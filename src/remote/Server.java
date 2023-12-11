@@ -107,7 +107,6 @@ public class Server {
                     e.printStackTrace();
                 }
             }
-
         }
 
         public void createHumanSnake(){
@@ -115,7 +114,6 @@ public class Server {
             board.addSnake(humanSnake);  
             humanSnake.start();
         }
-
 
         private void closeConnection() {
             try {

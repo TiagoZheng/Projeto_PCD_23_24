@@ -8,17 +8,24 @@ import javax.swing.text.Position;
 
 import environment.LocalBoard;
 import gui.SnakeGui;
+import remote.RemoteBoard;
 import environment.Cell;
 import environment.Board;
 import environment.BoardPosition;
 
 public class AutomaticSnake extends Snake {
 
+	
+
 	public AutomaticSnake(int id, LocalBoard board) {
 		super(id,board);
 	}
 
-	@Override
+	public AutomaticSnake(int id, RemoteBoard remoteBoard) {
+		super(id,remoteBoard);
+    }
+
+    @Override
 	public void run() {
 		doInitialPositioning();
 		//System.err.println("initial size:"+cells.size());
@@ -91,6 +98,11 @@ public class AutomaticSnake extends Snake {
 			bp.add(c.getPosition());
 		}
 		return bp;
+	}
+
+	@Override
+	public boolean isHumanPlayer() {
+		return false;
 	}
 }
 

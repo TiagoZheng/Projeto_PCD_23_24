@@ -64,9 +64,8 @@ public class Client {
 		new ClientInputHandler(socket).start();
 	}
 
-	/////////////////////////////////////////////
 	//////////////////////////////////////////////
-
+	//////////////////////////////////////////////
 
 	public class ClientInputHandler extends Thread{
     	private Socket connection;
@@ -91,7 +90,7 @@ public class Client {
 
 				processConnection();
 
-			} catch (IOException | ClassNotFoundException e) {
+			} catch (IOException | ClassNotFoundException | InterruptedException e) {
 					e.printStackTrace();
 			} finally {
 				closeConnection();
@@ -99,7 +98,7 @@ public class Client {
 
 		}
 
-		private void processConnection() throws ClassNotFoundException, IOException {
+		private void processConnection() throws ClassNotFoundException, IOException, InterruptedException {
 			while (true) {
 				gameInfo = (GameInfo) in.readObject();
 				// serverMessage = (GameInfo) in.readObject();

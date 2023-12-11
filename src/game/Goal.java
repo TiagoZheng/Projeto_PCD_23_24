@@ -27,7 +27,7 @@ public class Goal extends GameElement  {
 		return -1;
 	}
 
-	public BoardPosition getPosition() {
-		return currentPosition;
+	public void setValue(int i){
+		value = i;
 	}
 }
